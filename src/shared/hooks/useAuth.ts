@@ -1,8 +1,10 @@
 import { jwtDecode } from 'jwt-decode';
 import { create } from 'zustand';
 
+export type Role = 'shop' | 'admin' | 'factory';
+
 interface DecodedToken {
-  role: 'shop' | 'admin' | 'factory';
+  role: Role;
   user_id: number;
   username: string;
   exp: number;
