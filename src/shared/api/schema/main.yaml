@@ -1,0 +1,1512 @@
+components:
+  schemas:
+    authservice.LoginData:
+      properties:
+        password:
+          description: Пароль пользователя для входа в систему.
+          type: string
+        username:
+          description: Имя пользователя для входа в систему.
+          type: string
+      type: object
+    authservice.RegisterData:
+      properties:
+        address:
+          description: Адрес клиента, связанного с пользователем.
+          type: string
+        inn:
+          description: ИНН клиента, связанного с пользователем.
+          type: string
+        name:
+          description: Имя клиента, связанного с пользователем.
+          type: string
+        password:
+          description: Пароль, который пользователь создаст при регистрации.
+          type: string
+        role:
+          description: Роль пользователя, например, администратор или обычный пользователь.
+          type: string
+        username:
+          description: Имя пользователя, которое будет использоваться при регистрации.
+          type: string
+      type: object
+    authservice.Tokens:
+      properties:
+        access_token:
+          description: Токен доступа для авторизации запросов.
+          type: string
+        refresh_token:
+          description: Токен для обновления access_token, если он истек.
+          type: string
+      type: object
+    cart.Cart:
+      properties:
+        id:
+          description: Уникальный идентификатор корзины.
+          type: integer
+        items:
+          description: Список товаров, добавленных в корзину.
+          items:
+            $ref: '#/components/schemas/cart.Item'
+          type: array
+          uniqueItems: false
+        total:
+          description: Общая сумма стоимости всех товаров в корзине.
+          type: integer
+      type: object
+    cart.Item:
+      properties:
+        color:
+          description: Цвет товара.
+          type: string
+        count:
+          description: Количество единиц данного товара в корзине.
+          type: integer
+        id:
+          description: Уникальный идентификатор элемента корзины.
+          type: integer
+        isSelected:
+          description: Признак, выбран ли данный товар (например, для оформления заказа).
+          type: boolean
+        name:
+          description: Название товара.
+          type: string
+        price:
+          description: Цена за единицу товара.
+          type: number
+        productId:
+          description: Идентификатор товара (связь с ProductItem).
+          type: integer
+        size:
+          description: Размер товара (например, 42, 50 и т.д.).
+          type: integer
+      type: object
+    clientservice.ClientInfo:
+      properties:
+        address:
+          description: Адрес клиента.
+          type: string
+        id:
+          description: Уникальный идентификатор клиента.
+          type: integer
+        inn:
+          description: ИНН клиента.
+          type: string
+        name:
+          description: Имя клиента.
+          type: string
+      type: object
+    order.Order:
+      properties:
+        createDate:
+          description: Дата и время создания заказа
+          type: string
+        deliveryWeight:
+          description: Общий вес доставки для всех товаров в заказе
+          type: number
+        id:
+          description: Уникальный идентификатор заказа
+          type: string
+        status:
+          $ref: '#/components/schemas/order.Status'
+        total:
+          description: Общая сумма заказа
+          type: number
+      type: object
+    order.Status:
+      description: Текущий статус заказа (например, "в процессе", "доставлен", "отменен")
+      type: string
+      x-enum-varnames:
+      - Unknown
+      - Pending
+      - Delivering
+      - Delivered
+      - Cancelled
+    route.Location:
+      properties:
+        id:
+          type: string
+        lat:
+          type: number
+        lon:
+          type: number
+      type: object
+    route.Route:
+      properties:
+        path:
+          items:
+            $ref: '#/components/schemas/route.Location'
+          type: array
+          uniqueItems: false
+        total_distance:
+          type: number
+      type: object
+    search.AppliedFilters:
+      properties:
+        brand:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        color:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        limit:
+          type: integer
+        material:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        maxPrice:
+          type: number
+        minPrice:
+          type: number
+        page:
+          type: integer
+        size:
+          items:
+            type: integer
+          type: array
+          uniqueItems: false
+      type: object
+    search.Catalog:
+      properties:
+        filters:
+          $ref: '#/components/schemas/search.AppliedFilters'
+        pages:
+          type: integer
+        products:
+          items:
+            $ref: '#/components/schemas/search.Product'
+          type: array
+          uniqueItems: false
+        searchId:
+          type: string
+      type: object
+    search.Factory:
+      description: Завод, производящий продукт.
+      properties:
+        factoryName:
+          description: Название завода.
+          type: string
+        id:
+          description: Уникальный идентификатор завода.
+          type: integer
+      type: object
+    search.Filter:
+      properties:
+        allowedValues:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        name:
+          type: string
+      type: object
+    search.Product:
+      properties:
+        brandName:
+          description: Название бренда продукта.
+          type: string
+        factory:
+          $ref: '#/components/schemas/search.Factory'
+        id:
+          description: Уникальный идентификатор продукта.
+          type: integer
+        images:
+          description: Список изображений продукта.
+          items:
+            $ref: '#/components/schemas/search.ProductImages'
+          type: array
+          uniqueItems: false
+        items:
+          description: Список товаров (размер, количество на складе и т.д.).
+          items:
+            $ref: '#/components/schemas/search.ProductItem'
+          type: array
+          uniqueItems: false
+        materials:
+          description: Материалы, из которых состоит продукт.
+          items:
+            $ref: '#/components/schemas/search.ProductMaterial'
+          type: array
+          uniqueItems: false
+        name:
+          description: Название продукта.
+          type: string
+        price:
+          description: Цена продукта.
+          type: number
+        status:
+          description: Статус продукта (например, "в наличии", "не в наличии").
+          type: string
+      type: object
+    search.ProductImages:
+      properties:
+        id:
+          description: Уникальный идентификатор изображения.
+          type: integer
+        imageUrl:
+          description: URL изображения продукта.
+          type: string
+      type: object
+    search.ProductItem:
+      properties:
+        color:
+          description: Цвет товара.
+          type: string
+        id:
+          description: Уникальный идентификатор товара.
+          type: integer
+        size:
+          description: Размер товара (например, 42, 50 и т.д.).
+          type: integer
+        stockCount:
+          description: Количество товара на складе.
+          type: integer
+        weight:
+          description: Вес товара.
+          type: number
+      type: object
+    search.ProductMaterial:
+      properties:
+        Id:
+          description: Уникальный идентификатор материала.
+          type: integer
+        Material:
+          description: Название материала (например, "дерево", "металл").
+          type: string
+      type: object
+    userservice.User:
+      properties:
+        clientId:
+          description: Идентификатор клиента, с которым связан пользователь.
+          type: integer
+        id:
+          description: Уникальный идентификатор пользователя.
+          type: integer
+        password:
+          description: Пароль пользователя для входа в систему.
+          type: string
+        role:
+          description: Роль пользователя (например, администратор или обычный пользователь).
+          type: string
+        status:
+          description: Статус пользователя (например, активен или заблокирован).
+          type: integer
+        username:
+          description: Имя пользователя для входа в систему.
+          type: string
+      type: object
+    warehousesevice.Factory:
+      description: Завод, производящий продукт.
+      properties:
+        factoryName:
+          description: Название завода.
+          type: string
+        id:
+          description: Уникальный идентификатор завода.
+          type: integer
+      type: object
+    warehousesevice.Product:
+      properties:
+        brandName:
+          description: Название бренда продукта.
+          type: string
+        factory:
+          $ref: '#/components/schemas/warehousesevice.Factory'
+        id:
+          description: Уникальный идентификатор продукта.
+          type: integer
+        images:
+          description: Список изображений продукта.
+          items:
+            $ref: '#/components/schemas/warehousesevice.ProductImages'
+          type: array
+          uniqueItems: false
+        items:
+          description: Список товаров (размер, количество на складе и т.д.).
+          items:
+            $ref: '#/components/schemas/warehousesevice.ProductItem'
+          type: array
+          uniqueItems: false
+        materials:
+          description: Материалы, из которых состоит продукт.
+          items:
+            $ref: '#/components/schemas/warehousesevice.ProductMaterial'
+          type: array
+          uniqueItems: false
+        name:
+          description: Название продукта.
+          type: string
+        price:
+          description: Цена продукта.
+          type: number
+        status:
+          description: Статус продукта (например, "в наличии", "не в наличии").
+          type: string
+      type: object
+    warehousesevice.ProductImages:
+      properties:
+        id:
+          description: Уникальный идентификатор изображения.
+          type: integer
+        imageUrl:
+          description: URL изображения продукта.
+          type: string
+      type: object
+    warehousesevice.ProductItem:
+      properties:
+        color:
+          description: Цвет товара.
+          type: string
+        id:
+          description: Уникальный идентификатор товара.
+          type: integer
+        size:
+          description: Размер товара (например, 42, 50 и т.д.).
+          type: integer
+        stockCount:
+          description: Количество товара на складе.
+          type: integer
+        weight:
+          description: Вес товара.
+          type: number
+      type: object
+    warehousesevice.ProductMaterial:
+      properties:
+        id:
+          description: Уникальный идентификатор материала.
+          type: integer
+        material:
+          description: Название материала (например, "дерево", "металл").
+          type: string
+      type: object
+  securitySchemes:
+    LogisticAuth:
+      in: header
+      name: Authorization
+      type: apiKey
+externalDocs:
+  description: ""
+  url: ""
+info:
+  description: Прослойка для взаимодействия с логистическим сервисом
+  title: api-gateway
+  version: "1.0"
+openapi: 3.1.0
+paths:
+  /auth/login:
+    post:
+      description: Authenticates a user and returns access and refresh tokens.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/authservice.LoginData'
+        description: User login credentials
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authservice.Tokens'
+          description: Access and refresh tokens
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Forbidden - Invalid credentials or request
+      summary: User login
+      tags:
+      - auth
+  /auth/logout:
+    post:
+      description: Invalidates the user's session by revoking the refresh token.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Successfully logged out
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Forbidden - Invalid token or request
+      summary: User logout
+      tags:
+      - auth
+  /auth/register:
+    post:
+      description: Registers a new user and returns access and refresh tokens.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/authservice.RegisterData'
+        description: User registration data
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authservice.Tokens'
+          description: Access and refresh tokens
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Forbidden - Invalid registration data or request
+      summary: User registration
+      tags:
+      - auth
+  /cart:
+    get:
+      description: Возвращает содержимое корзины текущего пользователя.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cart.Cart'
+          description: Содержимое корзины пользователя
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Ошибка получения корзины
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Доступ запрещен
+      security:
+      - LogisticAuth: []
+      summary: Получить корзину пользователя
+      tags:
+      - Корзина
+  /cart/clear:
+    delete:
+      description: Удаляет все товары из корзины текущего пользователя.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Корзина успешно очищена
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Ошибка очистки корзины
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Доступ запрещен
+      security:
+      - LogisticAuth: []
+      summary: Очистить корзину
+      tags:
+      - Корзина
+  /cart/item:
+    post:
+      description: Позволяет добавить новый товар в корзину пользователя.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/cart.Item'
+        description: Данные товара для добавления в корзину
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cart.Item'
+          description: Добавленный товар
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Ошибка ввода или бизнес-логики
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Доступ запрещен
+      security:
+      - LogisticAuth: []
+      summary: Добавить товар в корзину
+      tags:
+      - Корзина
+    put:
+      description: Обновляет количество, размер или другие параметры элемента в корзине.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/cart.Item'
+        description: Данные элемента корзины для обновления
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Элемент корзины успешно обновлен
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Ошибка обновления элемента корзины
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Доступ запрещен
+      security:
+      - LogisticAuth: []
+      summary: Обновить элемент корзины
+      tags:
+      - Корзина
+  /cart/item/{id}:
+    delete:
+      description: Удаляет элемент корзины по его идентификатору.
+      parameters:
+      - description: ID элемента корзины
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Элемент успешно удален
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Ошибка удаления элемента корзины
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Доступ запрещен
+      security:
+      - LogisticAuth: []
+      summary: Удалить элемент из корзины
+      tags:
+      - Корзина
+  /client:
+    put:
+      description: This endpoint updates an existing client's information in the system.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/clientservice.ClientInfo'
+        description: Client information to be updated
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/clientservice.ClientInfo'
+          description: Updated client information
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Forbidden
+      security:
+      - LogisticAuth: []
+      summary: Update an existing client
+      tags:
+      - clients
+  /client/{id}:
+    delete:
+      description: Deletes a client by their ID. Authorization is required to access
+        this endpoint.
+      parameters:
+      - description: Client ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Successfully deleted client
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Bad Request - Invalid client ID
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Forbidden - Invalid token or unauthorized request
+      security:
+      - LogisticAuth: []
+      summary: Delete client
+      tags:
+      - clients
+    get:
+      description: Retrieves client details by their ID. Authorization is required
+        to access this endpoint.
+      parameters:
+      - description: Client ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/clientservice.ClientInfo'
+          description: Client details
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Bad Request - Invalid client ID
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Forbidden - Invalid token or unauthorized request
+      security:
+      - LogisticAuth: []
+      summary: Get client
+      tags:
+      - clients
+  /client/all:
+    get:
+      description: This endpoint retrieves a list of clients from the client service.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/clientservice.ClientInfo'
+                type: array
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Forbidden
+      security:
+      - LogisticAuth: []
+      summary: Get list of clients
+      tags:
+      - clients
+  /order:
+    post:
+      description: Создает новый заказ, используя переданные идентификаторы элементов
+        корзины.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                type: integer
+              type: array
+        description: Список идентификаторов элементов корзины
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Заказ успешно создан
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Ошибка при создании заказа
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Доступ запрещен
+      security:
+      - LogisticAuth: []
+      summary: Создать заказ
+      tags:
+      - Заказы
+  /order/all:
+    get:
+      description: Возвращает список всех заказов, связанных с текущим авторизованным
+        пользователем.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/order.Order'
+                type: array
+          description: Список заказов пользователя
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Ошибка при получении заказов пользователя
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Доступ запрещен
+      security:
+      - LogisticAuth: []
+      summary: Получить заказы пользователя
+      tags:
+      - Заказы
+  /products:
+    delete:
+      description: This endpoint allows you to delete a list of products from the
+        warehouse by their IDs.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                type: integer
+              type: array
+        description: List of product IDs to be deleted
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+          description: Products successfully deleted
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Forbidden
+      security:
+      - LogisticAuth: []
+      summary: Delete products from the warehouse
+      tags:
+      - products
+    get:
+      description: This endpoint retrieves a list of all products from the warehouse.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/warehousesevice.Product'
+                type: array
+          description: List of products
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Forbidden
+      security:
+      - LogisticAuth: []
+      summary: Get a list of products
+      tags:
+      - products
+    post:
+      description: This endpoint allows you to add a list of products to the warehouse.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/warehousesevice.Product'
+              type: array
+        description: List of products to be added
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+          description: Products successfully added
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Forbidden
+      security:
+      - LogisticAuth: []
+      summary: Add products to the warehouse
+      tags:
+      - products
+    put:
+      description: This endpoint allows you to update a list of products in the warehouse.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/warehousesevice.Product'
+              type: array
+        description: List of products to update
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+          description: Products successfully updated
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Forbidden
+      security:
+      - LogisticAuth: []
+      summary: Update a list of products
+      tags:
+      - products
+  /products/{id}:
+    get:
+      description: This endpoint retrieves a product from the warehouse by its ID.
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/warehousesevice.Product'
+          description: Product details
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Forbidden
+      security:
+      - LogisticAuth: []
+      summary: Get a product by ID
+      tags:
+      - products
+  /products/materials:
+    get:
+      description: This endpoint retrieves a list of all materials from the warehouse.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/warehousesevice.ProductMaterial'
+                type: array
+          description: List of materials
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Forbidden
+      security:
+      - LogisticAuth: []
+      summary: Get list of materials
+      tags:
+      - materials
+  /reports/order/{userId}/{date}:
+    get:
+      description: Retrieves the order report for a specific user by their ID.
+      parameters:
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: integer
+      - description: Date
+        in: path
+        name: date
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+          description: Order report data
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Invalid request or failed to process the response
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Forbidden - context creation failed
+      security:
+      - LogisticAuth: []
+      summary: Get order report
+      tags:
+      - Reports
+  /reports/sell/{userId}/{date}:
+    get:
+      description: Retrieves the sell report for a specific user by their ID.
+      parameters:
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: integer
+      - description: Date
+        in: path
+        name: date
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+          description: Sell report data
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Invalid request or failed to process the response
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Forbidden - context creation failed
+      security:
+      - LogisticAuth: []
+      summary: Get sell report
+      tags:
+      - Reports
+  /requests/{requestId}/{status}:
+    put:
+      description: Updates the status of a specific request by its ID.
+      parameters:
+      - description: Request ID
+        in: path
+        name: requestId
+        required: true
+        schema:
+          type: integer
+      - description: New status of the request
+        in: path
+        name: status
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Status updated successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Invalid request or failed to process the response
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Forbidden - context creation failed
+      security:
+      - LogisticAuth: []
+      summary: Update request status
+      tags:
+      - Requests
+  /requests/all:
+    get:
+      description: Retrieves a list of requests.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  type: object
+                type: array
+          description: List of requests
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Invalid request or failed to process the response
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Forbidden - context creation failed
+      security:
+      - LogisticAuth: []
+      summary: Get requests
+      tags:
+      - Requests
+  /routes/route/best:
+    post:
+      description: получение самого быстрого пути
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/route.Route'
+          description: Best route
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Invalid request or failed to process the response
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Forbidden - context creation failed
+      security:
+      - LogisticAuth: []
+      summary: получение самого быстрого пути
+      tags:
+      - Route
+  /search/catalog:
+    get:
+      description: Retrieves the catalog based on the provided query parameters.
+      parameters:
+      - description: Filter query parameter
+        in: query
+        name: filter
+        schema:
+          type: string
+      - description: Sort query parameter
+        in: query
+        name: sort
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/search.Catalog'
+          description: Catalog data
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Invalid request or failed to process the response
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Forbidden - context creation failed
+      security:
+      - LogisticAuth: []
+      summary: Get catalog
+      tags:
+      - Catalog
+  /search/catalog/product/{id}:
+    get:
+      description: Retrieves the catalog for a specific product by its ID.
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/search.Product'
+          description: Product catalog data
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Invalid request or failed to process the response
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Forbidden - context creation failed
+      security:
+      - LogisticAuth: []
+      summary: Get product catalog
+      tags:
+      - Catalog
+  /search/filters:
+    get:
+      description: Retrieves a list of active filters from the search service.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/search.Filter'
+                type: array
+          description: List of active filters
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Invalid request or failed to process the response
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Forbidden - context creation failed
+      security:
+      - LogisticAuth: []
+      summary: Get active filters
+      tags:
+      - Filters
+  /user:
+    post:
+      description: This endpoint allows you to add a new user to the system.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userservice.User'
+        description: User information to be added
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userservice.User'
+          description: User successfully added
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Forbidden
+      security:
+      - LogisticAuth: []
+      summary: Add a new user
+      tags:
+      - users
+    put:
+      description: This endpoint allows you to update the details of an existing user
+        in the system.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userservice.User'
+        description: User information to be updated
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userservice.User'
+          description: Updated user information
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Forbidden
+      security:
+      - LogisticAuth: []
+      summary: Update an existing user
+      tags:
+      - users
+  /user/{id}:
+    delete:
+      description: This endpoint allows you to delete an existing user by their ID.
+      parameters:
+      - description: User ID to be deleted
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Forbidden
+      security:
+      - LogisticAuth: []
+      summary: Delete a user
+      tags:
+      - users
+    get:
+      description: This endpoint retrieves the details of a user by their ID.
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userservice.User'
+          description: User details
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Forbidden
+      security:
+      - LogisticAuth: []
+      summary: Get a user by ID
+      tags:
+      - users
+  /user/all:
+    get:
+      description: This endpoint retrieves a list of all users from the system.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/userservice.User'
+                type: array
+          description: List of users
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Forbidden
+      security:
+      - LogisticAuth: []
+      summary: Get list of users
+      tags:
+      - users
