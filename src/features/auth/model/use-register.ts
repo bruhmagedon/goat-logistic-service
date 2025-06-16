@@ -1,27 +1,49 @@
 import { publicRqClient } from '@/shared/api/instance';
 import { ApiSchemas } from '@/shared/api/schema';
+import { useAuthStore } from '@/shared/hooks/useAuth';
+import { generateRandomInn } from '@/shared/lib/helpers/generateRandomInn';
+import { ROUTES } from '@/shared/model/routes';
 import { useNavigate } from 'react-router-dom';
 
-// Отделение бизнес логики работы с логином от ui формы
 export function useRegister() {
   const navigate = useNavigate();
+  const loginUser = useAuthStore((state) => state.login);
 
-  const loginMutation = publicRqClient.useMutation('post', '/auth/register', {
+  const registerMutation = publicRqClient.useMutation('post', '/auth/register', {
     onSuccess(data) {
-      session.login(data.accessToken);
-      navigate(ROUTES.HOME);
+      console.log('Успешная регистрация, получены токены.');
+      const user = loginUser(data.access_token!, data.refresh_token!);
+
+      console.log(`Пользователь ${user.username} вошел. Роль: ${user.role}. Перенаправление...`);
+
+      switch (user.role) {
+        case 'shop':
+          navigate(ROUTES.CATALOG);
+          break;
+        case 'factory':
+          navigate(ROUTES.PRODUCTS);
+          break;
+        default:
+          navigate(ROUTES.DASHBOARD);
+      }
+    },
+    onError(error) {
+      console.error('Ошибка регистрации:', error);
     },
   });
 
-  const register = (data: ApiSchemas['authservice.RegisterData']) => {
-    loginMutation.mutate({ body: data });
-  };
+  const register = (data: Omit<ApiSchemas['authservice.RegisterData'], 'inn'>) => {
+    const registrationData: ApiSchemas['authservice.RegisterData'] = {
+      ...data,
+      inn: generateRandomInn(),
+    };
 
-  const errorMessage = loginMutation.isError ? loginMutation.error.message : undefined;
+    registerMutation.mutate({ body: registrationData });
+  };
 
   return {
     register,
-    isPending: loginMutation.isPending,
-    errorMessage,
+    isPending: registerMutation.isPending,
+    error: registerMutation.error,
   };
 }

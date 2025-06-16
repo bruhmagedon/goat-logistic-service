@@ -3,6 +3,7 @@ import { type VariantProps, cva } from 'class-variance-authority';
 import * as React from 'react';
 
 import { cn } from '@/shared/lib/css';
+import { Loader } from './loader';
 
 const buttonVariants = cva(
   'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',
@@ -31,19 +32,47 @@ const buttonVariants = cva(
   },
 );
 
-function Button({
-  className,
-  variant,
-  size,
-  asChild = false,
-  ...props
-}: React.ComponentProps<'button'> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean;
-  }) {
-  const Comp = asChild ? Slot : 'button';
-
-  return <Comp data-slot="button" className={cn(buttonVariants({ variant, size, className }))} {...props} />;
+export interface ButtonProps
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'prefix'>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean;
+  text?: string;
+  children?: React.ReactNode;
+  prefix?: React.ReactNode;
+  suffix?: React.ReactNode;
+  isLoading?: boolean;
 }
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    { className, children, text, variant, size, prefix, suffix, isLoading, asChild = false, ...props },
+    ref,
+  ) => {
+    const Comp = asChild ? Slot : 'button';
+    return (
+      <Comp
+        className={cn(
+          buttonVariants({ variant, size, className }),
+          isLoading && 'pointer-events-none opacity-70',
+        )}
+        ref={ref}
+        {...props}
+      >
+        {isLoading ? (
+          <span className="flex items-center justify-center gap-2">
+            <Loader className="h-4 w-4 animate-spin" />
+          </span>
+        ) : (
+          <>
+            {prefix && <span className="mr-2">{prefix}</span>}
+            {children ? children : <span className="px-1.5">{text}</span>}
+            {suffix && <span className="ml-2">{suffix}</span>}
+          </>
+        )}
+      </Comp>
+    );
+  },
+);
+Button.displayName = 'Button';
 
 export { Button, buttonVariants };

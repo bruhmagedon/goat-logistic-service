@@ -8,14 +8,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { z } from 'zod';
+import { useRegister } from '../model/use-register';
 
 const registerSchema = z
   .object({
-    username: z
-      .string({
-        required_error: 'Email обязателен',
-      })
-      .email('Неверный email'),
+    username: z.string({
+      required_error: 'Email обязателен',
+    }),
     password: z
       .string({
         required_error: 'Пароль обязателен',
@@ -35,14 +34,24 @@ const registerSchema = z
     message: 'Пароли не совпадают',
   });
 
+type RegisterFormValues = z.infer<typeof registerSchema>;
+
 export function RegisterForm() {
-  const form = useForm({
+  const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
+    defaultValues: {
+      username: '',
+      password: '',
+      confirmPassword: '',
+      role: 'shop',
+      address: '',
+      name: '',
+    },
   });
 
-  // const { errorMessage, isPending, register } = useRegister();
+  const { register, isPending, error } = useRegister();
 
-  const onSubmit = form.handleSubmit(() => {});
+  const onSubmit = form.handleSubmit(register);
 
   return (
     <Form {...form}>
@@ -145,10 +154,11 @@ export function RegisterForm() {
               />
             </div>
           </TabsContent>
-          <Button disabled={false} type="submit">
+          {error && <p className="text-red-500">{error}</p>}
+          <Button isLoading={isPending} type="submit">
             Зарегистрироваться
           </Button>
-          <Button asChild variant="outline">
+          <Button variant="outline">
             <Link to={ROUTES.LOGIN}>Уже есть аккаунт? Войти</Link>
           </Button>
         </Tabs>
@@ -156,94 +166,3 @@ export function RegisterForm() {
     </Form>
   );
 }
-
-// export function RegisterForm() {
-//   return (
-//     <form /* onSubmit={handleSubmit(onSubmit)} */>
-
-//         {/* Таб 1: Данные для входа */}
-//         <TabsContent value="credentials">
-//           <div className="flex flex-col gap-6 py-4">
-//             <div className="grid gap-3">
-//               <Label htmlFor="email">Email</Label>
-//               <Input
-//                 id="email"
-//                 type="email"
-//                 placeholder="example@company.com"
-//                 required
-//                 // {...register("email")} // Пример для react-hook-form
-//               />
-//             </div>
-//             <div className="grid gap-3">
-//               <Label htmlFor="password">Пароль</Label>
-//               <Input
-//                 id="password"
-//                 type="password"
-//                 placeholder="********"
-//                 required
-//                 // {...register("password")}
-//               />
-//             </div>
-//             <div className="grid gap-3">
-//               <Label htmlFor="confirmPassword">Подтвердите пароль</Label>
-//               <Input
-//                 id="confirmPassword"
-//                 type="password"
-//                 placeholder="********"
-//                 required
-//                 // {...register("confirmPassword")}
-//               />
-//             </div>
-//           </div>
-//         </TabsContent>
-
-//         {/* Таб 2: Информация о пользователе/организации */}
-//         <TabsContent value="organization">
-//           <div className="flex flex-col gap-6 py-4">
-//             <div className="grid gap-3">
-//               <Label htmlFor="role">Ваша роль</Label>
-//               <Select /* onValueChange={(value) => field.onChange(value)} defaultValue={field.value} */>
-//                 <SelectTrigger id="role" className="w-full">
-//                   <SelectValue placeholder="Выберите роль в системе" />
-//                 </SelectTrigger>
-//                 <SelectContent>
-//                   <SelectItem value="consumer">Потребитель (Магазин)</SelectItem>
-//                   <SelectItem value="supplier">Поставщик (Завод)</SelectItem>
-//                 </SelectContent>
-//               </Select>
-//             </div>
-//             <div className="grid gap-3">
-//               <Label htmlFor="organizationName">Название организации</Label>
-//               <Input
-//                 id="organizationName"
-//                 type="text"
-//                 placeholder="ООО 'Кроссовки Плюс'"
-//                 required
-//                 // {...register("organizationName")}
-//               />
-//             </div>
-//             <div className="grid gap-3">
-//               <Label htmlFor="organizationAddress">Адрес организации</Label>
-//               <Input
-//                 id="organizationAddress"
-//                 type="text"
-//                 placeholder="г. Москва, ул. Логистическая, д. 1"
-//                 required
-//                 // {...register("organizationAddress")}
-//               />
-//             </div>
-//           </div>
-//         </TabsContent>
-//       </Tabs>
-
-//       <div className=<Button type="submit" className="w-full">
-//           Зарегистрироваться
-//         </Button><
-//         "mt-6 flex flex-col gap-3"
-//         <Button asChild variant=<Link to={APP_ROUTES.LOGIN}>Уже есть аккаунт? Войти</Link><
-//           "outline"
-//         </Button>
-//       </div>
-//     </form>
-//   );
-// }

@@ -63,10 +63,10 @@ export function LoginForm() {
               </FormItem>
             )}
           />
-          <Button disabled={isPending} type="submit">
+          <Button isLoading={isPending} type="submit">
             Войти
           </Button>
-          <Button asChild variant="outline">
+          <Button variant="outline">
             <Link to={ROUTES.REGISTER}>Регистрация</Link>
           </Button>
         </div>
