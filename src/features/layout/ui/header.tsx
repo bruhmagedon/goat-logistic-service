@@ -8,7 +8,12 @@ interface HeaderProps {
 
 export const Header = ({ className, children }: HeaderProps) => {
   return (
-    <header className={cn('h-[var(--header-height)]', className)}>
+    <header
+      className={cn('h-[var(--header-height)]', className)}
+      style={{
+        paddingRight: 'var(--radix-scroll-area-padding-right)',
+      }}
+    >
       <div className="container mx-auto flex h-full border border-border bg-background-secondary">
         {children}
       </div>

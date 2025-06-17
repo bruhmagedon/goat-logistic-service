@@ -32,6 +32,10 @@ export const appRouter = createBrowserRouter([
                 path: ROUTES.PRODUCTS, // Используем ROUTES.PRODUCTS из shared/model/routes.ts
                 lazy: () => import('@/features/factory-products/factory-product-list.page'),
               },
+              {
+                path: ROUTES.DELIVERIES,
+                lazy: () => import('@/features/factory-deliveries/deliveries.page'),
+              },
             ],
           },
         ],
