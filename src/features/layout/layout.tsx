@@ -59,6 +59,18 @@ export function Layout() {
                 </Link>
               </>
             )}
+            {user?.role === 'shop' && (
+              <>
+                <Link to={ROUTES.CART_AND_ORDERS}>
+                  <Button size="small">Корзина и заказы</Button>
+                </Link>
+                <Link to={ROUTES.SHOP_PROFILE}>
+                  <Button size="small" variant={'outline'}>
+                    Профиль
+                  </Button>
+                </Link>
+              </>
+            )}
             <Button size="small" variant={'outline'} onClick={logout}>
               Выйти
             </Button>

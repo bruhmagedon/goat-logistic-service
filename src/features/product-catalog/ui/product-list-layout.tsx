@@ -1,6 +1,6 @@
-import React from "react";
-import { Skeleton } from "@/shared/ui/kit/skeleton"; // Предполагается наличие Skeleton
-import { ViewMode } from "../model/types";
+import { Skeleton } from '@/shared/ui/kit/skeleton'; // Предполагается наличие Skeleton
+import React from 'react';
+import { ViewMode } from '../model/types';
 
 // Заголовок для секции контента (Товары, сортировка, переключатель вида)
 export function ProductListLayoutHeader({
@@ -11,8 +11,8 @@ export function ProductListLayoutHeader({
   actions?: React.ReactNode;
 }) {
   return (
-    <div className="flex justify-between items-center mb-6">
-      <h1 className="text-3xl font-bold">{title}</h1>
+    <div className="mb-6 flex items-center justify-between">
+      <h1 className="font-bold text-3xl">{title}</h1>
       {actions && <div className="flex items-center gap-4">{actions}</div>}
     </div>
   );
@@ -41,30 +41,26 @@ export function ProductListLayoutContent({
   renderGrid?: () => React.ReactNode; // Функция для рендера сетки
 }) {
   if (isPending) {
-    return <div className="text-center py-10 text-lg">Загрузка товаров...</div>;
+    return <div className="py-10 text-center text-lg">Загрузка товаров...</div>;
   }
 
   if (isEmpty) {
-    return <div className="text-center py-10 text-lg">Товары не найдены.</div>;
+    return <div className="py-10 text-center text-lg">Товары не найдены.</div>;
   }
 
   return (
     <div>
-      {mode === "list" && renderList && (
+      {mode === 'list' && renderList && (
         <div className="flex flex-col gap-0">{renderList()}</div> // gap-0 для ProductItem с border-b
       )}
-      {mode === "cards" && renderGrid && (
-        <div className="grid grid-cols-1  md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
-          {renderGrid()}
-        </div>
-      )}
+      {mode === 'cards' && renderGrid && <div className="grid grid-cols-4 gap-6">{renderGrid()}</div>}
       {!isPending && children}
 
       {hasCursor && (
-        <div ref={cursorRef} className="text-center py-8">
+        <div ref={cursorRef} className="py-8 text-center">
           {isPendingNext &&
-            (mode === "cards" ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-4 gap-6">
+            (mode === 'cards' ? (
+              <div className="grid grid-cols-4 gap-6">
                 {[...Array(4)].map((_, i) => (
                   <Skeleton key={i} className="h-80 w-full" />
                 ))}

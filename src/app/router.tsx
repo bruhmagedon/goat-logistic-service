@@ -24,14 +24,13 @@ export const appRouter = createBrowserRouter([
                 path: ROUTES.CATALOG,
                 lazy: () => import('@/features/product-catalog/product-list.page'),
               },
-
               {
                 path: ROUTES.PRODUCT_DETAIL,
                 lazy: () => import('@/features/shop/pages/product.page'),
               },
               {
                 path: ROUTES.CART_AND_ORDERS,
-                lazy: () => import("@/features/orders/orders.page"),
+                lazy: () => import('@/features/orders/orders.page'),
               },
               {
                 path: ROUTES.PRODUCTS,
@@ -45,6 +44,10 @@ export const appRouter = createBrowserRouter([
                 path: ROUTES.FACTORY_PROFILE,
                 lazy: () => import('@/features/factory-profile/factory-profile.page'),
               },
+              {
+                path: ROUTES.FACTORY_PROFILE,
+                lazy: () => import('@/features/factory-profile/factory-profile.page'),
+              },
             ],
           },
           {
@@ -53,6 +56,14 @@ export const appRouter = createBrowserRouter([
               {
                 path: ROUTES.DASHBOARD,
                 lazy: () => import('@/features/admin-main/admin.page'),
+              },
+              {
+                path: ROUTES.USER_MANAGEMENT,
+                lazy: () => import('@/features/admin-products/admin-products.page'),
+              },
+              {
+                path: ROUTES.PRODUCT_MANAGEMENT,
+                lazy: () => import('@/features/admin-users/page'),
               },
             ],
           },
