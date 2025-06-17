@@ -158,7 +158,7 @@ function OrdersPage() {
                 />
               </div>
               <ScrollArea className="flex-grow -mx-1">
-                <div className="px-1 space-y-3">
+                <div className="px-1 pt-4 space-y-3">
                   {filteredOrders.length > 0 ? (
                     filteredOrders.map((order) => (
                       <OrderListItem
