@@ -56,7 +56,8 @@ const imageUrls = [
   "https://i.imgur.com/AESFoUB.png",
 ];
 
-const allMockProducts: Product[] = imageUrls.map((url, index) => {
+export const allMockProducts: Product[] = imageUrls.map((url, index) => {
+  // Добавляем export
   const brands = [
     "Nike",
     "Adidas",
