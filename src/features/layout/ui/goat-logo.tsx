@@ -1,10 +1,13 @@
+import { cn } from '@/shared/lib/css';
+
 interface GoatLogoProps {
-  title: string;
+  title?: string;
+  className?: string;
 }
 
-export const GoatLogo = ({ title }: GoatLogoProps) => {
+export const GoatLogo = ({ title, className }: GoatLogoProps) => {
   return (
-    <div className="text-[26px]">
+    <div className={cn('text-[26px]', className)}>
       <strong>goat</strong> <span className="font-light">{title}</span>
     </div>
   );
