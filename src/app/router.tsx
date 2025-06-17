@@ -30,6 +30,10 @@ export const appRouter = createBrowserRouter([
                 lazy: () => import("@/features/shop/pages/product.page"),
               },
               {
+                path: ROUTES.CART_AND_ORDERS,
+                lazy: () => import("@/features/orders/orders.page"),
+              },
+              {
                 path: ROUTES.PRODUCTS,
                 lazy: () =>
                   import(
