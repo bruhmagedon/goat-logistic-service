@@ -1,7 +1,10 @@
-import React, { useState } from "react";
-import { Button } from "@/shared/ui/kit/button";
-import { Product } from "../model/types";
-import { Plus, Minus } from "lucide-react";
+import { ROUTES } from '@/shared/model/routes';
+import { Button } from '@/shared/ui/kit/button';
+import { Minus, Plus } from 'lucide-react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import { Product } from '../model/types';
 
 // --- Типы и Моковые данные (для примера) ---
 
@@ -29,16 +32,16 @@ interface ProductDetailCardProps {
 }
 
 const mockVariants: ProductVariant[] = [
-  { id: "v1", color: "Зеленый", size: 43, stock: 6 },
-  { id: "v2", color: "Красный", size: 42, stock: 2 },
-  { id: "v3", color: "Красный", size: 43, stock: 10 },
-  { id: "v4", color: "Черный", size: 41, stock: 0 },
+  { id: 'v1', color: 'Зеленый', size: 43, stock: 6 },
+  { id: 'v2', color: 'Красный', size: 42, stock: 2 },
+  { id: 'v3', color: 'Красный', size: 43, stock: 10 },
+  { id: 'v4', color: 'Черный', size: 41, stock: 0 },
 ];
 
 const mockCharacteristics = [
-  { name: "Текстиль", value: "Зеленый", size: 41 },
-  { name: "Резина", value: "Красный", size: 42 },
-  { name: "Кожа", value: "Черный", size: 42 },
+  { name: 'Текстиль', value: 'Зеленый', size: 41 },
+  { name: 'Резина', value: 'Красный', size: 42 },
+  { name: 'Кожа', value: 'Черный', size: 42 },
 ];
 
 // --- Компонент-хелпер: Счётчик количества товара ---
@@ -68,7 +71,7 @@ function VariantQuantityStepper({
 
   return (
     <div className="flex items-center gap-3">
-      <div className="flex h-6 w-12 items-center justify-center rounded-md bg-violet-600 text-sm font-bold text-white shadow">
+      <div className="flex h-6 w-12 items-center justify-center rounded-md bg-violet-600 font-bold text-sm text-white shadow">
         {quantity}
       </div>
       <Button
@@ -94,18 +97,26 @@ function VariantQuantityStepper({
 // --- Основной компонент карточки товара ---
 
 export function ProductDetailCard({ product }: ProductDetailCardProps) {
+  const navigation = useNavigate();
   const currentProductVariants = product.variants || mockVariants;
   const currentCharacteristics = product.characteristics || mockCharacteristics;
 
+  const addToCart = () => {
+    toast.success(`Товар добавлен в корзину`, {
+      action: {
+        label: 'В корзину',
+        onClick: () => navigation(ROUTES.CART_AND_ORDERS),
+      },
+    });
+  };
+
   return (
-    <div className="border-l border-r border-b border-stone-300 ">
+    <div className="max-h-full border-stone-300">
       {/* Верхняя плашка с заголовком и хлебными крошками */}
-      <div className="flex items-center justify-between  px-6 py-4">
-        <h2 className="text-xl font-semibold text-neutral-900">Товар</h2>
+      <div className="flex items-center justify-between px-6 py-4">
+        <h2 className="font-semibold text-2xl text-neutral-900">Товар</h2>
         <div className="text-base">
-          <span className="text-neutral-400">
-            Кроссовки &gt; Мужские кроссовки &gt;{" "}
-          </span>
+          <span className="text-neutral-400">Кроссовки &gt; Мужские кроссовки &gt; </span>
           <span className="font-semibold text-neutral-900">{product.name}</span>
         </div>
       </div>
@@ -116,24 +127,18 @@ export function ProductDetailCard({ product }: ProductDetailCardProps) {
         <div className="flex flex-col gap-6">
           <div className="aspect-square w-full overflow-hidden rounded-lg border border-gray-200 bg-white p-6">
             <img
-              src={product.imageUrl || "https://i.imgur.com/gSmC47V.png"}
+              src={product.imageUrl || 'https://i.imgur.com/gSmC47V.png'}
               alt={product.name}
               className="h-full w-full rounded-lg object-cover"
             />
           </div>
           <div className="rounded-lg border border-gray-200 bg-white p-6">
-            <table className="w-full text-left text-sm">
+            <table className="w-full text-left ">
               <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="px-3 py-2.5 font-semibold text-neutral-900">
-                    Название товара
-                  </th>
-                  <th className="px-3 py-2.5 font-semibold text-neutral-900">
-                    Цвет
-                  </th>
-                  <th className="px-3 py-2.5 text-right font-semibold text-neutral-900">
-                    Размер
-                  </th>
+                <tr className="border-gray-200 border-b">
+                  <th className="px-3 py-2.5 font-semibold text-neutral-900">Название товара</th>
+                  <th className="px-3 py-2.5 font-semibold text-neutral-900">Цвет</th>
+                  <th className="px-3 py-2.5 text-right font-semibold text-neutral-900">Размер</th>
                 </tr>
               </thead>
               <tbody>
@@ -152,63 +157,51 @@ export function ProductDetailCard({ product }: ProductDetailCardProps) {
         {/* Правая колонка */}
         <div className="flex flex-col gap-6">
           <div className="rounded-lg border border-gray-200 bg-white p-6">
-            <h1 className="text-3xl font-semibold">{product.brand}</h1>
+            <h1 className="font-semibold text-3xl">{product.brand}</h1>
             <p className="mt-1 text-xl">
-              <span className="font-normal">Кроссовки</span>{" "}
+              <span className="font-normal">Кроссовки</span>{' '}
               <span className="font-medium">{product.name}</span>
             </p>
-            <p className="my-3.5 text-3xl font-semibold">
-              {product.price.toLocaleString("ru-RU")} {product.currency}
+            <p className="my-3.5 font-semibold text-3xl">
+              {product.price.toLocaleString('ru-RU')} {product.currency}
             </p>
             <Button
               size="large"
-              className="h-10 bg-violet-600 text-sm font-semibold text-white shadow-sm hover:bg-violet-700"
+              className="h-10 bg-violet-600 font-semibold text-white shadow-sm hover:bg-violet-700"
+              onClick={addToCart}
             >
               Добавить в заказ
             </Button>
-            <div className="mt-3.5 space-y-1 text-sm">
+            <div className="mt-3.5 space-y-1 ">
               <p className="text-neutral-900">
-                Вес товара:{" "}
-                <span className="text-neutral-400">
-                  {product.weight || "725г"}
-                </span>
+                Вес товара: <span className="text-neutral-400">{product.weight || '725г'}</span>
               </p>
               <p className="text-neutral-900">
-                Изготовитель:{" "}
-                <span className="text-neutral-400">
-                  {product.manufacturer || "Puma Performance Factory"}
-                </span>
+                Изготовитель:{' '}
+                <span className="text-neutral-400">{product.manufacturer || 'Puma Performance Factory'}</span>
               </p>
             </div>
           </div>
           <div className="flex-1 rounded-lg border border-gray-200 bg-white p-6">
-            <h3 className="text-xl font-medium">Доступные варианты товара</h3>
+            <h3 className="font-medium text-xl">Доступные варианты товара</h3>
             <div className="mt-3.5 space-y-3.5">
               {currentProductVariants.map((variant) => (
-                <div
-                  key={variant.id}
-                  className="border-b border-gray-200 pb-2.5"
-                >
+                <div key={variant.id} className="border-gray-200 border-b pb-2.5">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2.5 text-sm font-medium">
+                    <div className="flex items-center gap-2.5 font-medium text-sm">
                       <p>
-                        <span className="text-neutral-400">Цвет:</span>{" "}
-                        <span className="text-neutral-900">
-                          {variant.color}
-                        </span>
+                        <span className="text-neutral-400">Цвет:</span>{' '}
+                        <span className="text-neutral-900">{variant.color}</span>
                       </p>
                       <p>
-                        <span className="text-neutral-400">Размер:</span>{" "}
+                        <span className="text-neutral-400">Размер:</span>{' '}
                         <span className="text-neutral-900">{variant.size}</span>
                       </p>
                     </div>
-                    <VariantQuantityStepper
-                      stock={variant.stock}
-                      onQuantityChange={() => {}}
-                    />
+                    <VariantQuantityStepper stock={variant.stock} onQuantityChange={() => {}} />
                   </div>
-                  <p className="mt-1 text-xs text-neutral-400">
-                    Доступно на складе: {variant.stock}
+                  <p className="mt-1 text-neutral-400 text-sm">
+                    Доступно на складе: <span className="font-medium text-foreground">{variant.stock}</span>
                   </p>
                 </div>
               ))}

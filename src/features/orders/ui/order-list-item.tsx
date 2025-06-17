@@ -1,9 +1,9 @@
 // src/features/orders/ui/order-list-item.tsx
 
-import { Badge } from "@/shared/ui/kit/badge";
-import { Order, OrderStatus } from "@/features/orders/model/types";
-import { Truck, PackageCheck, PackageX, ShoppingCart } from "lucide-react";
-import { cn } from "@/shared/lib/css";
+import { Order, OrderStatus } from '@/features/orders/model/types';
+import { cn } from '@/shared/lib/css';
+import { Badge } from '@/shared/ui/kit/badge';
+import { PackageCheck, PackageX, ShoppingCart, Truck } from 'lucide-react';
 
 interface OrderListItemProps {
   order: Order;
@@ -11,83 +11,63 @@ interface OrderListItemProps {
   onSelect: (orderId: string) => void;
 }
 
-const statusConfig: Record<
-  OrderStatus,
-  { label: string; icon: React.ElementType; className: string }
-> = {
+const statusConfig: Record<OrderStatus, { label: string; icon: React.ElementType; className: string }> = {
   delivered: {
-    label: "Доставлен",
+    label: 'Доставлен',
     icon: PackageCheck,
-    className: "bg-green-100 text-green-800 border-green-300",
+    className: 'bg-green-100 text-black border-green-300',
   },
-  "in-transit": {
-    label: "В пути",
+  'in-transit': {
+    label: 'В пути',
     icon: Truck,
-    className: "bg-blue-100 text-blue-800 border-blue-300",
+    className: 'bg-blue-100 text-black border-blue-300',
   },
   processing: {
-    label: "Собирается",
+    label: 'Собирается',
     icon: ShoppingCart,
-    className: "bg-yellow-100 text-yellow-800 border-yellow-300",
+    className: 'bg-yellow-100 text-black  border-yellow-300',
   },
   cancelled: {
-    label: "Отменен",
+    label: 'Отменен',
     icon: PackageX,
-    className: "bg-red-100 text-red-800 border-red-300",
+    className: 'bg-red-100 text-black  border-red-300',
   },
 };
 
-export function OrderListItem({
-  order,
-  isSelected,
-  onSelect,
-}: OrderListItemProps) {
+export function OrderListItem({ order, isSelected, onSelect }: OrderListItemProps) {
   const config = statusConfig[order.status];
-  const formattedPrice = new Intl.NumberFormat("ru-RU").format(
-    order.totalPrice
-  );
+  const formattedPrice = new Intl.NumberFormat('ru-RU').format(order.totalPrice);
 
   return (
+    // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
     <div
       className={cn(
-        "p-2.5 rounded-lg border shadow-sm cursor-pointer transition-all duration-150 ease-in-out flex flex-col gap-1.5",
+        'flex cursor-pointer flex-col gap-1.5 rounded-lg border p-2.5 shadow-sm transition-all duration-150 ease-in-out',
         isSelected
-          ? "bg-purple-50 border-purple-500 ring-1 ring-purple-500"
-          : "bg-white border-gray-200 hover:border-gray-300 hover:shadow-md"
+          ? 'border-purple-500 bg-purple-50 ring-1 ring-purple-500'
+          : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md',
       )}
       onClick={() => onSelect(order.id)}
     >
-      <div className="flex justify-between items-start">
-        <p
-          className={cn(
-            "text-xs font-medium",
-            isSelected ? "text-gray-800" : "text-gray-500"
-          )}
-        >
-          От {order.date} <span className="text-gray-400 mx-0.5">•</span> №
-          {order.id}
+      <div className="flex items-start justify-between">
+        <p className={cn('font-medium text-sm', isSelected ? 'text-gray-800' : 'text-gray-500')}>
+          От {order.date} <span className="mx-0.5 text-gray-400">•</span> №{order.id}
         </p>
         <Badge
           variant="outline"
-          className={cn("text-xs px-2 py-0.5 font-semibold", config.className)}
+          className={cn('h-[30px] px-2 py-0.5 font-semibold text-sm', config.className)}
         >
-          <config.icon className="h-3.5 w-3.5 mr-1.5" />
+          <config.icon className="size-5!" />
           {config.label}
         </Badge>
       </div>
-      <div className="flex justify-between items-end">
-        <div className="text-[10px] space-y-0.5">
+      <div className="flex items-end justify-between">
+        <div className="space-y-0.5 text-sm">
           <div className="text-neutral-400">
-            Вес:{" "}
-            <span className="text-neutral-900 font-medium">
-              {order.totalWeight} кг
-            </span>
+            Вес: <span className="font-medium text-neutral-900">{order.totalWeight} кг</span>
           </div>
           <div className="text-neutral-400">
-            Цена:{" "}
-            <span className="text-neutral-900 font-medium">
-              {formattedPrice} ₽
-            </span>
+            Цена: <span className="font-medium text-neutral-900">{formattedPrice} ₽</span>
           </div>
         </div>
       </div>

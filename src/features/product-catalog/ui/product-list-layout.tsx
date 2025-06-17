@@ -1,6 +1,7 @@
 import { Skeleton } from '@/shared/ui/kit/skeleton'; // Предполагается наличие Skeleton
 import React from 'react';
 import { ViewMode } from '../model/types';
+import { ProductCardSkeleton } from './ProductCardSkeleton';
 
 // Заголовок для секции контента (Товары, сортировка, переключатель вида)
 export function ProductListLayoutHeader({
@@ -41,7 +42,16 @@ export function ProductListLayoutContent({
   renderGrid?: () => React.ReactNode; // Функция для рендера сетки
 }) {
   if (isPending) {
-    return <div className="py-10 text-center text-lg">Загрузка товаров...</div>;
+    return (
+      <div className="min-h-screen w-full bg-background p-6">
+        <div className="grid grid-cols-4 gap-6">
+          {/* Создаем массив из 8 элементов и рендерим скелет для каждого */}
+          {Array.from({ length: 12 }).map((_, index) => (
+            <ProductCardSkeleton key={index} />
+          ))}
+        </div>
+      </div>
+    );
   }
 
   if (isEmpty) {

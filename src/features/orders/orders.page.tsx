@@ -1,30 +1,26 @@
 // file: src/pages/orders/orders-page.tsx
 
-import { useState, useMemo } from "react";
-import { Button } from "@/shared/ui/kit/button";
-import { Input } from "@/shared/ui/kit/input";
-import { mockCartItems, mockOrders } from "./model/order-mocks";
-import { CartItemCard } from "./ui/cart-item-card";
-import { OrderDetailView } from "./ui/order-detail-view";
-import { CartItem, Order } from "./model/types";
-import { ArrowUpDown, Search } from "lucide-react";
-import { OrderListItem } from "@/features/orders/ui/order-list-item";
-import { ScrollArea } from "@/shared/ui/kit/scroll-area";
-import { CheckoutDialog } from "@/features/orders/ui/CheckoutDialog";
+import { CheckoutDialog } from '@/features/orders/ui/CheckoutDialog';
+import { OrderListItem } from '@/features/orders/ui/order-list-item';
+import { Button } from '@/shared/ui/kit/button';
+import { Input } from '@/shared/ui/kit/input';
+import { ScrollArea } from '@/shared/ui/kit/scroll-area';
+import { ArrowUpDown, Search } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { mockCartItems, mockOrders } from './model/order-mocks';
+import { CartItem, Order } from './model/types';
+import { CartItemCard } from './ui/cart-item-card';
+import { OrderDetailView } from './ui/order-detail-view';
 
 function OrdersPage() {
   const [cartItems, setCartItems] = useState<CartItem[]>(mockCartItems);
   const [orders, setOrders] = useState<Order[]>(mockOrders);
-  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(
-    mockOrders[0]?.id || null
-  );
-  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(mockOrders[0]?.id || null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleQuantityChange = (itemId: string, newQuantity: number) => {
     setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === itemId ? { ...item, quantity: newQuantity } : item
-      )
+      prev.map((item) => (item.id === itemId ? { ...item, quantity: newQuantity } : item)),
     );
   };
   const handleRemoveItem = (itemId: string) => {
@@ -32,36 +28,24 @@ function OrdersPage() {
   };
   const handleToggleSelectItem = (itemId: string, selected: boolean) => {
     setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === itemId ? { ...item, isSelected: selected } : item
-      )
+      prev.map((item) => (item.id === itemId ? { ...item, isSelected: selected } : item)),
     );
   };
   const handleClearCart = () => {
-    setCartItems((prev) =>
-      prev.map((item) => ({ ...item, isSelected: false }))
-    );
+    setCartItems((prev) => prev.map((item) => ({ ...item, isSelected: false })));
   };
 
-  const selectedCartItems = useMemo(
-    () => cartItems.filter((item) => item.isSelected),
-    [cartItems]
-  );
+  const selectedCartItems = useMemo(() => cartItems.filter((item) => item.isSelected), [cartItems]);
   const totalCartPrice = useMemo(() => {
-    return selectedCartItems.reduce(
-      (sum, item) => sum + item.pricePerItem * item.quantity,
-      0
-    );
+    return selectedCartItems.reduce((sum, item) => sum + item.pricePerItem * item.quantity, 0);
   }, [selectedCartItems]);
-  const formattedTotalCartPrice = new Intl.NumberFormat("ru-RU").format(
-    totalCartPrice
-  );
+  const formattedTotalCartPrice = new Intl.NumberFormat('ru-RU').format(totalCartPrice);
 
   const filteredOrders = useMemo(() => {
     return orders.filter(
       (order) =>
         order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        order.date.toLowerCase().includes(searchTerm.toLowerCase())
+        order.date.toLowerCase().includes(searchTerm.toLowerCase()),
     );
   }, [orders, searchTerm]);
 
@@ -71,19 +55,17 @@ function OrdersPage() {
 
   return (
     // 1. Обертка страницы теперь flex-контейнер, занимающий всю высоту экрана
-    <div className=" h-[93vh] w-full p-4 sm:p-6 flex flex-col">
+    <div className=" flex h-[93vh] w-full flex-col">
       {/* 2. Основной блок теперь растягивается на всю доступную высоту (flex-1) */}
 
       <div className="flex h-full">
         {/* Левая колонка: Корзина */}
-        <aside className="w-70  shrink-0 p-4 border-r border-stone-300 flex flex-col ">
-          <h2 className="text-xl font-semibold text-neutral-900 mb-4 shrink-0">
-            Корзина
-          </h2>
+        <aside className="flex w-100 shrink-0 flex-col border-stone-300 border-r p-4 ">
+          <h2 className="mb-4 shrink-0 font-semibold text-neutral-900 text-xl">Корзина</h2>
 
           {/* 4. ScrollArea занимает всё оставшееся место */}
-          <ScrollArea className="flex-1 h-[70%] -mx-2 pr-3">
-            <div className="px-2 space-y-3">
+          <ScrollArea className="-mx-2 h-[70%] flex-1 pr-3">
+            <div className="space-y-3 px-2">
               {cartItems.length > 0 ? (
                 cartItems.map((item) => (
                   <CartItemCard
@@ -95,23 +77,17 @@ function OrdersPage() {
                   />
                 ))
               ) : (
-                <p className="text-sm text-center text-gray-500 pt-10">
-                  Корзина пуста
-                </p>
+                <p className="pt-10 text-center text-gray-500 text-sm">Корзина пуста</p>
               )}
             </div>
           </ScrollArea>
 
           {/* Подвал корзины */}
           {cartItems.length > 0 && (
-            <div className="mt-auto pt-4 border-t border-gray-200 space-y-3 shrink-0">
-              <div className="flex justify-between items-center">
-                <span className="text-md font-semibold text-gray-700">
-                  Итого:
-                </span>
-                <span className="text-lg font-bold text-purple-600">
-                  {formattedTotalCartPrice} ₽
-                </span>
+            <div className="mt-auto shrink-0 space-y-3 border-gray-200 border-t pt-4">
+              <div className="flex items-center justify-between">
+                <span className="font-semibold text-gray-700 text-md">Итого:</span>
+                <span className="font-bold text-lg text-purple-600">{formattedTotalCartPrice} ₽</span>
               </div>
               <CheckoutDialog items={selectedCartItems}>
                 <Button
@@ -122,11 +98,7 @@ function OrdersPage() {
                   Оформить заказ
                 </Button>
               </CheckoutDialog>
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={handleClearCart}
-              >
+              <Button variant="outline" className="w-full" onClick={handleClearCart}>
                 Очистить корзину
               </Button>
             </div>
@@ -134,24 +106,18 @@ function OrdersPage() {
         </aside>
 
         {/* Правая часть: Заказы */}
-        <main className="flex-1 flex bg-white overflow-hidden">
+        <main className="flex flex-1 overflow-hidden bg-white">
           {/* Колонка списка заказов */}
-          <div className="w-[384px] shrink-0 p-4  flex flex-col">
+          <div className="flex w-110 shrink-0 flex-col p-4">
             <div className="shrink-0">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold text-neutral-900">
-                  Заказы
-                </h2>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="text-gray-500 hover:bg-gray-100"
-                >
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="font-semibold text-neutral-900 text-xl">Заказы</h2>
+                <Button variant="ghost" size="icon" className="text-gray-500 hover:bg-gray-100">
                   <ArrowUpDown className="h-4 w-4" />
                 </Button>
               </div>
               <div className="relative mb-4">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Search className="-translate-y-1/2 absolute top-1/2 left-3 h-4 w-4 text-gray-400" />
                 <Input
                   placeholder="Поиск заказа"
                   value={searchTerm}
@@ -162,8 +128,8 @@ function OrdersPage() {
             </div>
 
             {/* 5. Эта ScrollArea также занимает все оставшееся место в своей колонке */}
-            <ScrollArea className="flex-1 -mx-1">
-              <div className="px-1 pt-4 space-y-3">
+            <ScrollArea className="-mx-1 flex-1">
+              <div className="space-y-3 px-1 pt-4">
                 {filteredOrders.length > 0 ? (
                   filteredOrders.map((order) => (
                     <OrderListItem
@@ -174,16 +140,14 @@ function OrdersPage() {
                     />
                   ))
                 ) : (
-                  <p className="text-sm text-center text-gray-500 pt-10">
-                    Заказы не найдены
-                  </p>
+                  <p className="pt-10 text-center text-gray-500 text-sm">Заказы не найдены</p>
                 )}
               </div>
             </ScrollArea>
           </div>
 
           {/* Детали заказа */}
-          <div className="flex-1 p-4 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto p-4">
             <OrderDetailView order={selectedOrder} />
           </div>
         </main>
