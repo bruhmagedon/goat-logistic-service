@@ -3,24 +3,26 @@ import { TriangleAlert } from 'lucide-react';
 import { DeliveryCard } from './compose/delivery-card';
 import { useDeliveryStore } from './model/store';
 
-// Пороговое значение для срочной поставки
+// Пороговое значение для срочной поставки остается тем же
 const URGENT_THRESHOLD = 2;
 
-function DeliveriesPage() {
+export function DeliveriesPage() {
   const { items, updateDeliveryAmount, formDelivery } = useDeliveryStore();
 
+  // ИЗМЕНЕНИЕ ЗДЕСЬ:
+  // urgentItems по-прежнему фильтруется, чтобы показать только проблемные товары.
   const urgentItems = items.filter((item) => item.stockCount <= URGENT_THRESHOLD);
-  const regularItems = items.filter((item) => item.stockCount > URGENT_THRESHOLD);
+  // regularItems больше не фильтруется! Теперь это просто `items`, чтобы отобразить ВСЕ товары.
+  const allItemsToDisplay = items;
 
   return (
     <div className="w-full bg-background p-6">
       <h1 className="mb-8 font-bold text-3xl text-foreground">Управление поставками</h1>
 
-      {/* --- ИЗМЕНЕНА СТРУКТURA СЕТКИ --- */}
       <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-3">
-        {/* Левая колонка с обычными товарами */}
+        {/* Левая колонка теперь отображает ВСЕ товары */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:col-span-2">
-          {regularItems.map((item) => (
+          {allItemsToDisplay.map((item) => (
             <DeliveryCard
               key={item.variantId}
               item={item}
@@ -30,9 +32,9 @@ function DeliveriesPage() {
           ))}
         </div>
 
-        {/* Правая колонка со срочными поставками (сделана "липкой") */}
+        {/* Правая колонка, как и раньше, показывает только срочные */}
         <div className="lg:sticky lg:top-24 lg:col-span-1">
-          <Card className="border-red-200 bg-red-50">
+          <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-red-600 text-xl">
                 <TriangleAlert className="h-5 w-5" />
@@ -42,17 +44,22 @@ function DeliveriesPage() {
                 Товары, количество которых на общем складе достигло критически низкого уровня.
               </p>
             </CardHeader>
-            {/* --- ИЗМЕНЕНИЕ: Добавлен скролл --- */}
-            <CardContent className="max-h-[60vh] space-y-4 overflow-y-auto pr-3">
-              {urgentItems.map((item) => (
-                <DeliveryCard
-                  key={item.variantId}
-                  item={item}
-                  variant="urgent"
-                  onAmountChange={(amount) => updateDeliveryAmount(item.variantId, amount)}
-                  onFormDelivery={() => formDelivery(item.variantId)}
-                />
-              ))}
+            <CardContent className="max-h-[66vh] space-y-4 overflow-y-auto pr-3">
+              {urgentItems.length > 0 ? (
+                urgentItems.map((item) => (
+                  <DeliveryCard
+                    key={item.variantId}
+                    item={item}
+                    variant="urgent"
+                    onAmountChange={(amount) => updateDeliveryAmount(item.variantId, amount)}
+                    onFormDelivery={() => formDelivery(item.variantId)}
+                  />
+                ))
+              ) : (
+                <p className="px-6 pb-4 text-muted-foreground text-sm">
+                  Нет товаров, требующих срочной поставки.
+                </p>
+              )}
             </CardContent>
           </Card>
         </div>
@@ -61,4 +68,5 @@ function DeliveriesPage() {
   );
 }
 
+// Если у тебя настроен экспорт по умолчанию
 export const Component = DeliveriesPage;

@@ -19,74 +19,65 @@ export function DeliveryCard({
   onAmountChange,
   onFormDelivery,
 }: DeliveryCardProps) {
-  // Улучшенная логика цвета, как на макете
   const stockColor =
-    item.stockCount > 5
-      ? 'text-green-600'
-      : item.stockCount > 2
-        ? 'text-orange-500' // Оранжевый для среднего количества
-        : 'text-red-600'; // Красный для низкого
+    item.stockCount > 5 ? 'text-green-600' : item.stockCount > 0 ? 'text-yellow-600' : 'text-destructive';
 
   const isUrgent = variant === 'urgent';
 
   return (
-    <Card
-      className={cn(
-        'flex flex-col justify-between', // flex-col для растягивания кнопки
-        isUrgent && 'border-red-200 bg-red-50',
-      )}
-    >
-      <CardHeader className="pb-4">
-        <CardTitle className={cn('font-semibold text-base', isUrgent && 'text-red-700')}>
+    <Card className={cn(isUrgent && 'border border-destructive/20 bg-[#FEF2F2]')}>
+      <CardHeader>
+        <CardTitle className={cn('text-base', isUrgent && 'text-destructive/90')}>
           {isUrgent && <TriangleAlert className="mr-2 inline-block h-4 w-4" />}
           {item.productName}
         </CardTitle>
-        <p className="pt-1 text-muted-foreground text-xs">
+        <p className="text-muted-foreground text-xs">
           Цвет: {item.color}, Размер: {item.size}
         </p>
       </CardHeader>
-      <CardContent className="flex flex-col space-y-4">
+      <CardContent className="space-y-4">
         <div className="flex items-center justify-between font-semibold text-sm">
           <p>Кол-во на общем складе:</p>
           <p className={cn(stockColor, 'font-bold')}>{item.stockCount} шт.</p>
         </div>
-        {isUrgent && <p className="text-red-600/90 text-xs">Требуется срочное пополнение!</p>}
-        <div className="flex-grow" /> {/* Заполнитель, чтобы кнопка была внизу */}
-        <div className="space-y-1">
-          <Label className="font-semibold text-muted-foreground text-xs">Отправить на склад (шт.):</Label>
-          <div className="flex items-center gap-2">
-            <Button
-              size="icon"
-              variant="outline"
-              className="h-9 w-9 shrink-0"
-              onClick={() => onAmountChange(item.deliveryAmount - 1)}
-            >
-              <Minus className="h-4 w-4" />
-            </Button>
-            <Input
-              type="number"
-              className="h-9 w-full text-center" // Ширина на всю доступную
-              value={item.deliveryAmount}
-              onChange={(e) => onAmountChange(Number.parseInt(e.target.value, 10) || 0)}
-            />
-            <Button
-              size="icon"
-              variant="outline"
-              className="h-9 w-9 shrink-0"
-              onClick={() => onAmountChange(item.deliveryAmount + 1)}
-            >
-              <Plus className="h-4 w-4" />
-            </Button>
+
+        {isUrgent && item.stockCount <= 2 && (
+          <p className="text-destructive/80 text-xs">Требуется срочное пополнение!</p>
+        )}
+
+        <div className={cn('flex flex-col gap-5', isUrgent && 'flex-row items-end')}>
+          <div>
+            <Label className="font-semibold text-xs">Отправить на склад (шт.):</Label>
+            <div className="mt-1 flex items-center gap-2">
+              <Button
+                size="icon"
+                variant="outline"
+                className="h-9 w-9"
+                onClick={() => onAmountChange(item.deliveryAmount - 1)}
+              >
+                <Minus className="h-4 w-4" />
+              </Button>
+              <Input
+                type="number"
+                className="h-9 w-16 text-center"
+                value={item.deliveryAmount}
+                onChange={(e) => onAmountChange(Number.parseInt(e.target.value, 10) || 0)}
+              />
+              <Button
+                size="icon"
+                variant="outline"
+                className="h-9 w-9"
+                onClick={() => onAmountChange(item.deliveryAmount + 1)}
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
+          <Button className="w-full" onClick={onFormDelivery} variant={isUrgent ? 'destructive' : 'default'}>
+            <Send className="mr-2 h-4 w-4" />
+            Сформировать поставку
+          </Button>
         </div>
-        <Button
-          className="mt-2 w-full"
-          onClick={onFormDelivery}
-          variant={isUrgent ? 'destructive' : 'default'}
-        >
-          <Send className="mr-2 h-4 w-4" />
-          Сформировать поставку
-        </Button>
       </CardContent>
     </Card>
   );

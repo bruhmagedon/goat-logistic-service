@@ -52,9 +52,11 @@ export function Layout() {
                     Поставки
                   </Button>
                 </Link>
-                <Button size="small" variant={'outline'}>
-                  Профиль
-                </Button>
+                <Link to={ROUTES.FACTORY_PROFILE}>
+                  <Button size="small" variant={'outline'}>
+                    Профиль
+                  </Button>
+                </Link>
               </>
             )}
             <Button size="small" variant={'outline'} onClick={logout}>
