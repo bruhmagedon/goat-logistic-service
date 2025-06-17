@@ -6,11 +6,11 @@ import { cn } from '@/shared/lib/css';
 import { Loader } from './loader';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex items-center cursor-pointer justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
-        default: 'bg-primary hover:bg-primary-hover text-primary-foreground shadow',
+        default: 'bg-primary hover:bg-primary-hover hover:bg-primary/90 text-primary-foreground shadow',
         secondary:
           'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary-hover border border-border',
         destructive: 'bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90',

@@ -1,9 +1,15 @@
+import { useAuthStore } from '@/shared/hooks/useAuth';
 import { Button } from '@/shared/ui/kit/button';
+import { CirclePlus } from 'lucide-react';
 import { Link, Outlet } from 'react-router-dom';
 import { GoatLogo } from './ui/goat-logo';
 import { Header } from './ui/header';
+import { ThemeSwitcher } from './ui/theme-switcher';
 
 export function Layout() {
+  const logout = useAuthStore((state) => state.logout);
+  const user = useAuthStore((state) => state.user);
+
   return (
     <div className="container mx-auto">
       <Header>
@@ -16,19 +22,25 @@ export function Layout() {
           </span>
         </Link>
         <div className="flex flex-1 items-center justify-between py-5 pr-7 pl-6">
-          {/* <SeachInput className="flex-1" /> */}
-          <div className="flex items-center gap-2">
-            {/* <CartDrawer />
-            <Link
-              href="/shop/profile"
-              className="inline-flex h-8 w-auto items-center justify-center whitespace-nowrap rounded-md border border-border bg-secondary px-1.5 font-medium text-secondary-foreground text-sm shadow-sm transition-colors hover:bg-secondary-hover focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-            >
-              Профиль
-            </Link>
-            <ThemeSwitcher /> */}
-            <Button size="small" variant={'outline'} onClick={() => {}}>
+          <div />
+          <div className="flex items-center justify-end gap-2">
+            {user?.role === 'factory' && (
+              <>
+                <Button size="small" prefix={<CirclePlus size={20} />}>
+                  Добавить новый товар
+                </Button>
+                <Button size="small" variant={'outline'}>
+                  Поставки
+                </Button>
+                <Button size="small" variant={'outline'}>
+                  Профиль
+                </Button>
+              </>
+            )}
+            <Button size="small" variant={'outline'} onClick={logout}>
               Выйти
             </Button>
+            <ThemeSwitcher />
           </div>
         </div>
       </Header>

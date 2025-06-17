@@ -23,7 +23,7 @@ export function useLogin() {
           navigate('/shop');
           break;
         default:
-          navigate('/factory');
+          navigate('/factory/products');
       }
     },
     onError(error) {
