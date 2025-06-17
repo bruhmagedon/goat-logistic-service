@@ -7,11 +7,13 @@ export interface ProductVariant {
   color: string;
   size: string | number;
   quantity: number;
+  weight: number;
 }
 
 export interface FactoryProduct {
   id: string;
   name: string;
+  brand: string;
   status: ProductStatus;
   statusIcon?: ReactNode; // Для иконки статуса, если нужно
   price: number;
