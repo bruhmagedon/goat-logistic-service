@@ -54,7 +54,7 @@ export function ProductListLayoutContent({
         <div className="flex flex-col gap-0">{renderList()}</div> // gap-0 для ProductItem с border-b
       )}
       {mode === "cards" && renderGrid && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1  md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
           {renderGrid()}
         </div>
       )}
@@ -64,7 +64,7 @@ export function ProductListLayoutContent({
         <div ref={cursorRef} className="text-center py-8">
           {isPendingNext &&
             (mode === "cards" ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-6">
                 {[...Array(4)].map((_, i) => (
                   <Skeleton key={i} className="h-80 w-full" />
                 ))}
@@ -93,12 +93,12 @@ export function ProductListLayout({
   children: React.ReactNode; // ProductListLayoutContent
 }) {
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row xl:w-full">
       {sidebar}
-      <main className="flex-1 p-6">
+      <div className="flex-1 p-6">
         {header}
         {children}
-      </main>
+      </div>
     </div>
   );
 }

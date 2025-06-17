@@ -9,7 +9,7 @@ export function ProductItem({ product }: ProductItemProps) {
   const isInCart = false; // Это состояние должно управляться логикой корзины
 
   return (
-    <div className="flex items-center p-4 border-b last:border-b-0">
+    <div className="flex items-center p-4 border-b last:border-b-0 hover:bg-gray-50 transition-colors duration-200 ease-in-out hover:shadow-md cursor-pointer">
       <img
         src={product.imageUrl || "https://via.placeholder.com/100x100"} // Заглушка для изображения
         alt={product.name}
@@ -27,7 +27,7 @@ export function ProductItem({ product }: ProductItemProps) {
       </div>
       <Button
         variant={isInCart ? "outline" : "default"}
-        size="sm"
+        size="small"
         // onClick={() => addToCart(product.id)} // TODO: Реализовать добавление в корзину
       >
         {isInCart ? "В корзине" : "Заказать"}

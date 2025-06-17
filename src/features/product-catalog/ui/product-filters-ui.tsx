@@ -27,9 +27,9 @@ interface ProductFiltersUIProps {
 
 export function ProductFiltersUI({}: ProductFiltersUIProps) {
   return (
-    <div className="space-y-6">
+    <div className="">
       <div>
-        <h3 className="text-lg font-semibold mb-2">Обувь</h3>
+        <h3 className="text-lg font-semibold mb-2 mt-6">Обувь</h3>
         <div className="space-y-2">
           {shoeCategories.map((category) => (
             <div key={category.id} className="flex items-center space-x-2">
@@ -40,11 +40,9 @@ export function ProductFiltersUI({}: ProductFiltersUIProps) {
         </div>
       </div>
 
-      <hr />
-
-      <div>
-        <h3 className="text-lg font-semibold mb-2">Цена от и до:</h3>
-        <div className="flex items-center space-x-2">
+      <div className="border-t border-b my-6 pt-6 pb-11">
+        <h3 className="text-lg font-semibold mb-3 ">Цена от и до:</h3>
+        <div className="flex items-center">
           <Input
             type="number"
             placeholder="0"
@@ -61,10 +59,8 @@ export function ProductFiltersUI({}: ProductFiltersUIProps) {
         </div>
       </div>
 
-      <hr />
-
-      <div>
-        <h3 className="text-lg font-semibold mb-2">Бренды</h3>
+      <div className="">
+        <h3 className="text-lg font-semibold mb-3">Бренды</h3>
         <div className="space-y-2">
           {brandOptions.map((brand) => (
             <div key={brand.id} className="flex items-center space-x-2">
