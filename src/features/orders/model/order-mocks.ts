@@ -1,0 +1,190 @@
+// file: src/features/orders/model/order-mocks.ts
+
+import { CartItem, Order, OrderStatus } from "./types"; // Путь может отличаться
+
+export const mockCartItems: CartItem[] = [
+  {
+    id: "cart-1",
+    productId: "p-001",
+    name: "Кроссовки Nike Air Zoom Pegasus 37",
+    variant: { color: "Серый", size: 42 },
+    quantity: 1,
+    pricePerItem: 8990,
+    isSelected: true,
+  },
+  {
+    id: "cart-2",
+    productId: "p-002",
+    name: "Худи Adidas Originals Trefoil",
+    variant: { color: "Черный", size: "L" },
+    quantity: 2,
+    pricePerItem: 5490,
+    isSelected: true,
+  },
+  {
+    id: "cart-3",
+    productId: "p-003",
+    name: "Футболка Puma Essentials Logo",
+    variant: { color: "Белый", size: "M" },
+    quantity: 3,
+    pricePerItem: 1990,
+    isSelected: false,
+  },
+  {
+    id: "cart-4",
+    productId: "p-004",
+    name: "Кроссовки Puma RS-X3 Puzzle",
+    variant: { color: "Разноцветный", size: 44 },
+    quantity: 1,
+    pricePerItem: 9490,
+    isSelected: true,
+  },
+  {
+    id: "cart-5",
+    productId: "p-005",
+    name: "Спортивные брюки Reebok Classic",
+    variant: { color: "Синий", size: "L" },
+    quantity: 1,
+    pricePerItem: 4990,
+    isSelected: true,
+  },
+];
+
+export const mockOrders: Order[] = [
+  {
+    id: "112512151",
+    date: "28 ноября 2023",
+    totalWeight: 5.8,
+    totalPrice: 98332,
+    status: "delivered",
+    items: [
+      {
+        name: "Addidas Nonimage",
+        color: "Желтый",
+        size: 39,
+        quantity: 4,
+        price: 12020,
+      },
+      {
+        name: "Nike Air Zoom Pegasus 37",
+        color: "Серый",
+        size: 42,
+        quantity: 6,
+        price: 18900,
+      },
+      {
+        name: "Nike Easy Kanye Edition",
+        color: "Черный",
+        size: 43,
+        quantity: 9,
+        price: 10800,
+      },
+      {
+        name: "Nike Easy Kanye Edition",
+        color: "Зеленый",
+        size: 41,
+        quantity: 9,
+        price: 10800,
+      },
+      {
+        name: "Nike X52 SPB EDITION",
+        color: "Черный",
+        size: 42,
+        quantity: 4,
+        price: 9812,
+      },
+    ],
+  },
+  {
+    id: "112512152",
+    date: "27 ноября 2023",
+    totalWeight: 2.1,
+    totalPrice: 16470,
+    status: "in-transit",
+    items: [
+      {
+        name: "Худи Adidas Originals",
+        color: "Серый",
+        size: "M",
+        quantity: 1,
+        price: 5490,
+      },
+      {
+        name: "Кроссовки Puma RS-X3",
+        color: "Белый",
+        size: 43,
+        quantity: 1,
+        price: 9490,
+      },
+      {
+        name: "Носки Stance",
+        color: "Черный",
+        size: "42-45",
+        quantity: 2,
+        price: 745,
+      },
+    ],
+  },
+  {
+    id: "112512153",
+    date: "26 ноября 2023",
+    totalWeight: 1.5,
+    totalPrice: 10980,
+    status: "processing",
+    items: [
+      {
+        name: "Худи Adidas Originals Trefoil",
+        color: "Черный",
+        size: "L",
+        quantity: 2,
+        price: 5490,
+      },
+    ],
+  },
+  {
+    id: "112512154",
+    date: "25 ноября 2023",
+    totalWeight: 3.2,
+    totalPrice: 19970,
+    status: "cancelled",
+    items: [
+      {
+        name: "Кроссовки Nike Air Max 90",
+        color: "Инфракрасный",
+        size: 44,
+        quantity: 1,
+        price: 11990,
+      },
+      {
+        name: "Кепка The North Face",
+        color: "Черный",
+        size: "One Size",
+        quantity: 1,
+        price: 2490,
+      },
+      {
+        name: "Спортивные брюки Reebok",
+        color: "Серый",
+        size: "M",
+        quantity: 1,
+        price: 5490,
+      },
+    ],
+  },
+  {
+    id: "112512155",
+    date: "24 ноября 2023",
+    totalWeight: 0.8,
+    totalPrice: 7960,
+    status: "delivered",
+    items: [
+      {
+        name: "Футболка Puma",
+        color: "Белый",
+        size: "M",
+        quantity: 4,
+        price: 1990,
+      },
+    ],
+  },
+];
