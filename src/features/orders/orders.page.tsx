@@ -1,4 +1,4 @@
-// src/pages/orders/orders-page.tsx
+// file: src/pages/orders/orders-page.tsx
 
 import { useState, useMemo } from "react";
 import { Button } from "@/shared/ui/kit/button";
@@ -10,6 +10,7 @@ import { CartItem, Order } from "./model/types";
 import { ArrowUpDown, Search } from "lucide-react";
 import { OrderListItem } from "@/features/orders/ui/order-list-item";
 import { ScrollArea } from "@/shared/ui/kit/scroll-area";
+import { CheckoutDialog } from "@/features/orders/ui/CheckoutDialog";
 
 function OrdersPage() {
   const [cartItems, setCartItems] = useState<CartItem[]>(mockCartItems);
@@ -72,12 +73,9 @@ function OrdersPage() {
   }, [orders, selectedOrderId]);
 
   return (
-    <div className=" min-h-screen py-6 px-4 w-full">
-      {/* Контейнер с фиксированной шириной и рамкой */}
-      <div className=" bg-white border border-stone-300 rounded-xl overflow-hidden shadow-lg">
-        {/* Main Flex Layout */}
+    <div className="bg-gray-50 min-h-screen py-6 px-4 w-full">
+      <div className="w-full bg-white border border-stone-300 rounded-xl overflow-hidden shadow-lg">
         <div className="flex">
-          {/* Левый сайдбар: Корзина */}
           <aside className="w-64 shrink-0 p-4 border-r border-stone-300 flex flex-col bg-gray-50/50">
             <h2 className="text-xl font-semibold text-neutral-900 mb-4">
               Корзина
@@ -111,13 +109,19 @@ function OrdersPage() {
                     {formattedTotalCartPrice} ₽
                   </span>
                 </div>
-                <Button
-                  className="w-full bg-purple-600 hover:bg-purple-700"
-                  size="large"
-                  disabled={selectedCartItems.length === 0}
-                >
-                  Оформить заказ
-                </Button>
+
+                {/* --- ИЗМЕНЕНИЕ ЗДЕСЬ --- */}
+                <CheckoutDialog items={selectedCartItems}>
+                  <Button
+                    className="w-full bg-purple-600 hover:bg-purple-700"
+                    size="large"
+                    disabled={selectedCartItems.length === 0}
+                  >
+                    Оформить заказ
+                  </Button>
+                </CheckoutDialog>
+                {/* -------------------- */}
+
                 <Button
                   variant="outline"
                   className="w-full"
@@ -129,9 +133,8 @@ function OrdersPage() {
             )}
           </aside>
 
-          {/* Правая часть: Заказы */}
           <main className="flex-1 flex bg-white">
-            {/* Список заказов */}
+            {/* Остальная часть страницы остается без изменений */}
             <div className="w-[384px] shrink-0 p-4 border-r border-stone-300 flex flex-col">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold text-neutral-900">
@@ -154,8 +157,8 @@ function OrdersPage() {
                   className="pl-9"
                 />
               </div>
-              <ScrollArea className="flex-grow ">
-                <div className="px-1 pt-2 space-y-3">
+              <ScrollArea className="flex-grow -mx-1">
+                <div className="px-1 space-y-3">
                   {filteredOrders.length > 0 ? (
                     filteredOrders.map((order) => (
                       <OrderListItem
@@ -173,8 +176,6 @@ function OrdersPage() {
                 </div>
               </ScrollArea>
             </div>
-
-            {/* Детали заказа */}
             <div className="flex-1 p-4">
               <OrderDetailView order={selectedOrder} />
             </div>
