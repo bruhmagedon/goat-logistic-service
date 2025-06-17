@@ -1,39 +1,58 @@
-import React from "react";
-import { Button } from "@/shared/ui/kit/button"; // Предполагается наличие компонента Button
-import { Input } from "@/shared/ui/kit/input"; // Предполагается наличие компонента Input
-import { Checkbox } from "@/shared/ui/kit/checkbox"; // Предполагается наличие компонента Checkbox
-import { Label } from "@/shared/ui/kit/label"; // Предполагается наличие компонента Label
+// file: features/product-catalog/ui/product-filters-ui.tsx
 
-// Пример данных для фильтров (в реальном приложении они могут приходить с бэкенда)
+import React from "react";
+import { Button } from "@/shared/ui/kit/button";
+import { Input } from "@/shared/ui/kit/input";
+import { Checkbox } from "@/shared/ui/kit/checkbox";
+import { Label } from "@/shared/ui/kit/label";
+import type { ProductFilters } from "../model/use-product-filters";
+
+// Данные для фильтров
 const shoeCategories = [
   { id: "men", label: "Мужская обувь" },
   { id: "women", label: "Женская обувь" },
-  { id: "kids", label: "Детская обувь" },
-  { id: "accessories", label: "Аксессуары и уход" },
+  { id: "unisex", label: "Унисекс" }, // Добавил для соответствия мокам
 ];
 
+// ВАЖНО: id брендов должны совпадать с данными в моках
 const brandOptions = [
-  { id: "addidas", label: "addidas" },
-  { id: "fila", label: "Fila" },
-  { id: "nike", label: "Nike" },
-  { id: "reebok", label: "Reebok" },
-  { id: "puma", label: "Puma" },
+  { id: "Adidas", label: "Adidas" },
+  { id: "Nike", label: "Nike" },
+  { id: "Puma", label: "Puma" },
+  { id: "Reebok", label: "Reebok" },
+  { id: "GUCCI", label: "GUCCI" },
 ];
 
 interface ProductFiltersUIProps {
-  // TODO: Пропсы для управления состоянием фильтров
-  // Например, значения фильтров и функции для их изменения
+  filters: ProductFilters;
+  onCategoryChange: (categoryId: string, checked: boolean) => void;
+  onBrandChange: (brandId: string, checked: boolean) => void;
+  onPriceFromChange: (value: string) => void;
+  onPriceToChange: (value: string) => void;
 }
 
-export function ProductFiltersUI({}: ProductFiltersUIProps) {
+export function ProductFiltersUI({
+  filters,
+  onCategoryChange,
+  onBrandChange,
+  onPriceFromChange,
+  onPriceToChange,
+}: ProductFiltersUIProps) {
   return (
-    <div className="">
+    // Вся структура и классы возвращены к исходному состоянию
+    <div className="w-[16rem]">
       <div>
         <h3 className="text-lg font-semibold mb-2 mt-6">Обувь</h3>
         <div className="space-y-2">
           {shoeCategories.map((category) => (
             <div key={category.id} className="flex items-center space-x-2">
-              <Checkbox id={`cat-${category.id}`} />
+              <Checkbox
+                id={`cat-${category.id}`}
+                checked={filters.categories.includes(category.id)}
+                onCheckedChange={(checked) =>
+                  onCategoryChange(category.id, !!checked)
+                }
+              />
               <Label htmlFor={`cat-${category.id}`}>{category.label}</Label>
             </div>
           ))}
@@ -46,15 +65,19 @@ export function ProductFiltersUI({}: ProductFiltersUIProps) {
           <Input
             type="number"
             placeholder="0"
-            defaultValue="0"
+            value={filters.priceFrom}
+            onChange={(e) => onPriceFromChange(e.target.value)}
             className="w-full"
+            min="0"
           />
-          <span className="text-gray-500">-</span>
+          <span className="text-gray-500 mx-2">-</span>
           <Input
             type="number"
-            placeholder="1000"
-            defaultValue="1000"
+            placeholder="70000"
+            value={filters.priceTo}
+            onChange={(e) => onPriceToChange(e.target.value)}
             className="w-full"
+            min="0"
           />
         </div>
       </div>
@@ -64,7 +87,13 @@ export function ProductFiltersUI({}: ProductFiltersUIProps) {
         <div className="space-y-2">
           {brandOptions.map((brand) => (
             <div key={brand.id} className="flex items-center space-x-2">
-              <Checkbox id={`brand-${brand.id}`} />
+              <Checkbox
+                id={`brand-${brand.id}`}
+                checked={filters.brands.includes(brand.id)}
+                onCheckedChange={(checked) =>
+                  onBrandChange(brand.id, !!checked)
+                }
+              />
               <Label htmlFor={`brand-${brand.id}`}>{brand.label}</Label>
             </div>
           ))}

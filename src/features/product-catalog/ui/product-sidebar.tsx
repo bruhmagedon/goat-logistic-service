@@ -1,11 +1,16 @@
-import React from "react";
-import { ProductFiltersUI } from "./product-filters-ui";
+// file: features/product-catalog/ui/product-sidebar.tsx
 
-export function ProductSidebar() {
+import { ProductFiltersUI } from "./product-filters-ui";
+import { useProductFilters } from "../model/use-product-filters";
+
+// Тип пропсов для сайдбара будет таким же, как и для UI фильтров
+type ProductSidebarProps = React.ComponentProps<typeof ProductFiltersUI>;
+
+export function ProductSidebar(props: ProductSidebarProps) {
   return (
-    <aside className="w-64 p-4 border-r flex-shrink-0">
-      <h2 className="text-xl font-bold">Фильтрация</h2>
-      <ProductFiltersUI />
+    <aside className="p-4 border-r">
+      <h2 className="text-xl font-bold mb-4">Фильтры</h2>
+      <ProductFiltersUI {...props} />
     </aside>
   );
 }
