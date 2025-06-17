@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react"; // Добавьте useMemo
 
 export interface ProductFilters {
   categories: string[];
@@ -10,18 +10,23 @@ export interface ProductFilters {
 export function useProductFilters() {
   const [categories, setCategories] = useState<string[]>([]);
   const [priceFrom, setPriceFrom] = useState("0");
-  const [priceTo, setPriceTo] = useState("1000");
+  const [priceTo, setPriceTo] = useState("10000");
   const [brands, setBrands] = useState<string[]>([]);
 
   // TODO: Добавить функции для обновления каждого фильтра
 
-  return {
-    filters: {
+  const filters = useMemo(
+    () => ({
       categories,
       priceFrom,
       priceTo,
       brands,
-    },
+    }),
+    [categories, priceFrom, priceTo, brands]
+  );
+
+  return {
+    filters, // Теперь это мемоизированный объект
     setCategories,
     setPriceFrom,
     setPriceTo,

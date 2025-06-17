@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { ProductSidebar } from "./ui/product-sidebar";
 import {
   ProductListLayout,
@@ -22,9 +22,21 @@ function ProductListPage() {
   const [sortOption, setSortOption] = useState<ProductSortOption>("bestMatch");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const productFilters = useProductFilters();
+  const productFilters = useProductFilters(); // Получаем фильтры напрямую
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
+  // productFilters.filters уже мемоизирован внутри useProductFilters
   const debouncedFilters = useDebounce(productFilters.filters, 500);
+
+  console.log("Current debouncedFilters:", debouncedFilters);
+  console.log("Current debouncedSearchQuery:", debouncedSearchQuery);
+
+  const handleSortChange = useCallback((value: string) => {
+    setSortOption(value as ProductSortOption);
+  }, []);
+
+  const handleViewModeChange = useCallback((value: ViewMode) => {
+    setViewMode(value);
+  }, []);
 
   const {
     flatData: products = [], // Используем flatData для удобства
@@ -51,11 +63,12 @@ function ProductListPage() {
             <>
               <ProductSortSelect
                 value={sortOption}
-                onValueChange={(value) =>
-                  setSortOption(value as ProductSortOption)
-                }
+                onValueChange={handleSortChange}
               />
-              <ViewModeToggle value={viewMode} onChange={setViewMode} />
+              <ViewModeToggle
+                value={viewMode}
+                onChange={handleViewModeChange}
+              />
             </>
           }
         />
@@ -100,4 +113,3 @@ function ProductListPage() {
 
 // Для подключения к роутеру, если используется file-based routing
 export const Component = ProductListPage;
-export default ProductListPage;

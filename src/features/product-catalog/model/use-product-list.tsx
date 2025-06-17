@@ -9,114 +9,100 @@ interface UseProductListParams {
   searchQuery?: string;
 }
 
-// Ваши моковые данные (оставил без изменений)
-const allMockProducts: Product[] = [
-  // ... (Ваши существующие моковые продукты)
-  // Пример одного продукта:
-  {
-    id: "1",
-    name: "Кроссовки Nike Air Max 270",
-    brand: "Nike",
-    price: 12500, // Изменено на number
-    currency: "₽",
-    imageUrl:
-      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2hvZXN8ZW58MHx8MHx8fDA%3D&w=1000&q=80",
-    // description: "Современные кроссовки для активного образа жизни.", // Убрал, т.к. нет в Product interface
-    category: "men",
-    // rating: 4.5, // Убрал
-    // reviewsCount: 120, // Убрал
-  },
-  {
-    id: "2",
-    name: "Ботинки Timberland Premium",
-    brand: "Timberland",
-    price: 19900, // Изменено на number
-    currency: "₽",
-    imageUrl:
-      "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8c2hvZXN8ZW58MHx8MHx8fDA%3D&w=1000&q=80",
-    category: "men",
-  },
-  {
-    id: "3",
-    name: "Туфли-лодочки GUCCI",
-    brand: "GUCCI",
-    price: 56000, // Изменено на number
-    currency: "₽",
-    imageUrl:
-      "https://images.unsplash.com/photo-1560343090-f0409e92791a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8c2hvZXN8ZW58MHx8MHx8fDA%3D&w=1000&q=80",
-    category: "women",
-  },
-  {
-    id: "4",
-    name: "Кеды Converse Chuck Taylor All Star",
-    brand: "Converse",
-    price: 6500, // Изменено на number
-    currency: "₽",
-    imageUrl:
-      "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c2hvZXN8ZW58MHx8MHx8fDA%3D&w=1000&q=80",
-    category: "unisex",
-  },
-  {
-    id: "5",
-    name: "Сандалии Birkenstock Arizona",
-    brand: "Birkenstock",
-    price: 8900, // Изменено на number
-    currency: "₽",
-    imageUrl:
-      "https://images.unsplash.com/photo-1603487742131-4160ec900405?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fHNob2VzfGVufDB8fDB8fHww&w=1000&q=80",
-    category: "unisex",
-  },
-  {
-    id: "6",
-    name: "Беговые кроссовки ASICS GEL-Kayano",
-    brand: "ASICS",
-    price: 14000, // Изменено на number
-    currency: "₽",
-    imageUrl:
-      "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fHNob2VzfGVufDB8fDB8fHww&w=1000&q=80",
-    category: "unisex",
-  },
-  {
-    id: "7",
-    name: "Сапоги Dr. Martens 1460",
-    brand: "Dr. Martens",
-    price: 17500, // Изменено на number
-    currency: "₽",
-    imageUrl:
-      "https://images.unsplash.com/photo-1608256249259-ac9b66801590?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fHNob2VzfGVufDB8fDB8fHww&w=1000&q=80",
-    category: "unisex",
-  },
-  {
-    id: "8",
-    name: "Слипоны Vans Classic",
-    brand: "Vans",
-    price: 5300, // Изменено на number
-    currency: "₽",
-    imageUrl:
-      "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8c2hvZXN8ZW58MHx8MHx8fDA%3D&w=1000&q=80",
-    category: "unisex",
-  },
-  {
-    id: "9",
-    name: "Кроссовки New Balance 574",
-    brand: "New Balance",
-    price: 9800, // Изменено на number
-    currency: "₽",
-    imageUrl:
-      "https://images.unsplash.com/photo-1491553691912-b22aaa2ca8ea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fHNob2VzfGVufDB8fDB8fHww&w=1000&q=80",
-    category: "unisex",
-  },
-  {
-    id: "10",
-    name: "Балетки Chanel",
-    brand: "Chanel",
-    price: 65000, // Изменено на number
-    currency: "₽",
-    imageUrl:
-      "https://images.unsplash.com/photo-1572053515279-7cabc15993d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzV8fHNob2VzfGVufDB8fDB8fHww&w=1000&q=80",
-    category: "women",
-  },
+const imageUrls = [
+  "https://i.imgur.com/gSmC47V.png",
+  "https://i.imgur.com/2RtisSR.png",
+  "https://i.imgur.com/7T0ok4Q.png",
+  "https://i.imgur.com/AibLnbD.png",
+  "https://i.imgur.com/TtizaYP.png",
+  "https://i.imgur.com/vcbwD33.png",
+  "https://i.imgur.com/aSuwtH5.png",
+  "https://i.imgur.com/oa9Q3ak.png",
+  "https://i.imgur.com/o56b9K1.png",
+  "https://i.imgur.com/azy7jdR.png",
+  "https://i.imgur.com/lvs5Plq.png",
+  "https://i.imgur.com/5NEhxxk.png",
+  "https://i.imgur.com/4AopSLq.png",
+  "https://i.imgur.com/uquPx9w.png",
+  "https://i.imgur.com/ILCDYM1.png",
+  "https://i.imgur.com/7AnuW0C.png",
+  "https://i.imgur.com/AfQO3U7.png",
+  "https://i.imgur.com/EIsruG1.png",
+  "https://i.imgur.com/Rltsa8x.png",
+  "https://i.imgur.com/XrvaA9u.png",
+  "https://i.imgur.com/bwQ9cCZ.png",
+  "https://i.imgur.com/95K3VBc.png",
+  "https://i.imgur.com/3JcHVOb.png",
+  "https://i.imgur.com/yYZQoAo.png",
+  "https://i.imgur.com/xxCrARN.png",
+  "https://i.imgur.com/wISVdus.png",
+  "https://i.imgur.com/JiSu0RF.png",
+  "https://i.imgur.com/5caN6Ir.png",
+  "https://i.imgur.com/xer3tUH.png",
+  "https://i.imgur.com/kPZTQsJ.png",
+  "https://i.imgur.com/86vhU4S.png",
+  "https://i.imgur.com/8MAXv3V.png",
+  "https://i.imgur.com/pQEAvqF.png",
+  "https://i.imgur.com/rKoFlj4.png",
+  "https://i.imgur.com/zIv4yYe.png",
+  "https://i.imgur.com/45KginK.png",
+  "https://i.imgur.com/qHp8fvQ.png",
+  "https://i.imgur.com/tQgDqot.png",
+  "https://i.imgur.com/zzuYI3R.png",
+  "https://i.imgur.com/eo13YUT.png",
+  "https://i.imgur.com/FjVOkQ0.png",
+  "https://i.imgur.com/YrzUzZ3.png",
+  "https://i.imgur.com/5AbcEuo.png",
+  "https://i.imgur.com/AESFoUB.png",
 ];
+
+const allMockProducts: Product[] = imageUrls.map((url, index) => {
+  const brands = [
+    "Nike",
+    "Adidas",
+    "Puma",
+    "Reebok",
+    "Asics",
+    "New Balance",
+    "Converse",
+    "Vans",
+    "Timberland",
+    "GUCCI",
+    "Birkenstock",
+    "Dr. Martens",
+    "Chanel",
+  ];
+  const categories = ["men", "women", "unisex"];
+  const productNames = [
+    "Кроссовки",
+    "Ботинки",
+    "Туфли",
+    "Кеды",
+    "Сандалии",
+    "Сапоги",
+    "Слипоны",
+    "Балетки",
+    "Спортивные тапки",
+    "Шлепанцы",
+    "Мокасины",
+    "Эспадрильи",
+    "Лоферы",
+    "Оксфорды",
+    "Дерби",
+  ];
+
+  return {
+    id: (index + 1).toString(),
+    name: `${productNames[index % productNames.length]} ${
+      brands[index % brands.length]
+    } Model ${index + 1}`,
+    brand: brands[index % brands.length],
+    price: Math.floor(Math.random() * (70000 - 3000 + 1)) + 3000, // Random price between 3000 and 70000
+    currency: "₽",
+    imageUrl: url,
+    category: categories[index % categories.length],
+  };
+});
 
 export function useProductList({
   limit = 10,
@@ -191,6 +177,7 @@ export function useProductList({
       setTimeout(() => {
         try {
           const processedProducts = applyFiltersAndSort();
+          console.log("Processed products in loadPage:", processedProducts); // <--- ДОБАВЬТЕ ЭТО
           const newItems = processedProducts.slice(
             pageToLoad * limit,
             (pageToLoad + 1) * limit
