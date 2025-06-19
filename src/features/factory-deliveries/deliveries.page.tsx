@@ -19,9 +19,9 @@ export function DeliveriesPage() {
     <div className="w-full bg-background p-6">
       <h1 className="mb-8 font-bold text-3xl text-foreground">Управление поставками</h1>
 
-      <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-3">
+      <div className="flex gap-8">
         {/* Левая колонка теперь отображает ВСЕ товары */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:col-span-2">
+        <div className="grid flex-1 grid-cols-1 gap-6 md:grid-cols-2 lg:col-span-2">
           {allItemsToDisplay.map((item) => (
             <DeliveryCard
               key={item.variantId}

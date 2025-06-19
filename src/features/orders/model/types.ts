@@ -10,16 +10,21 @@ export interface CartItem {
     color: string;
     size: number | string;
   };
+  image: string;
   quantity: number;
   pricePerItem: number;
   isSelected?: boolean; // Для выбора товаров в корзине
 }
 
-export type OrderStatus =
-  | "delivered"
-  | "in-transit"
-  | "processing"
-  | "cancelled";
+export type OrderStatus = 'delivered' | 'in-transit' | 'processing' | 'cancelled';
+
+export interface OrderItem {
+  name: string;
+  color: string;
+  size: number | string;
+  quantity: number;
+  price: number;
+}
 
 export interface Order {
   id: string;
@@ -34,4 +39,10 @@ export interface Order {
     quantity: number;
     price: number;
   }>;
+}
+
+export interface UserProfile {
+  name: string;
+  inn: string;
+  address: string;
 }

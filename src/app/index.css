@@ -117,22 +117,38 @@
   * {
     @apply border-border outline-ring/50;
   }
+
+  /* Стилизация скроллбара для Webkit-браузеров */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    /* Фон дорожки с небольшим отступом от края */
+    background-color: hsl(var(--background));
+    margin: 2px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    /* Ползунок с градиентом и скруглением */
+    background-color: hsl(var(--border));
+    border-radius: 10px;
+    transition: background-color 0.2s;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    /* Ползунок при наведении становится цветом primary */
+    background-color: hsl(var(--primary) / 0.8);
+  }
+
+  /* Для Firefox */
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: hsl(var(--border)) hsl(var(--background));
+  }
+
   body {
     @apply bg-background text-foreground;
   }
-}
-
-.scrollbar::-webkit-scrollbar {
-  width: 4px;
-}
-.scrollbar::-webkit-scrollbar-track {
-  border-radius: 6px;
-  background: var(--background);
-}
-.scrollbar::-webkit-scrollbar-thumb {
-  background: #dbdadd;
-  border-radius: 6px;
-}
-.scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #dbdadd;
 }

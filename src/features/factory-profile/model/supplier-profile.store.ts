@@ -9,10 +9,10 @@ interface SupplierProfileState {
 
 export const useSupplierProfileStore = create<SupplierProfileState>((set) => ({
   profile: {
-    companyName: 'Атлант-Спорт Производство',
-    inn: '5012345678',
-    address: 'г. Клин, Ленинградское шоссе, 88 км, Технопарк "Импульс", строение 5',
-    email: 'sales@atlant-sport.pro',
+    companyName: 'CitySole Retail',
+    inn: '7701234567',
+    address: 'г. Москва, ул. Примерная, д. 10, кв. 5',
+    email: 'example@email.com',
   },
   reports: [
     {

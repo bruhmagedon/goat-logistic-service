@@ -1,35 +1,13 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/shared/ui/kit/card";
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-  ChartLegend,
-  ChartLegendContent,
-} from "@/shared/ui/kit/chart";
-import {
-  Area,
-  AreaChart,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
-} from "recharts";
-import { useUserProfileStore } from "../model/user-profile.store";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/kit/card';
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { useUserProfileStore } from '../model/user-profile.store';
 
 const chartConfig = {
   volume: {
-    label: "Объем закупок",
-    color: "hsl(var(--chart-1))",
+    label: 'Объем закупок',
+    color: 'hsl(var(--chart-1))',
   },
-} satisfies import("@/shared/ui/kit/chart").ChartConfig;
+} satisfies import('@/shared/ui/kit/chart').ChartConfig;
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
@@ -39,10 +17,8 @@ const CustomTooltip = ({ active, payload, label }: any) => {
           <span className="text-muted-foreground text-sm">{label}</span>
           <div className="flex items-center">
             <span className="text-foreground">
-              {"Объем закупок"}:{" "}
-              <span className="font-medium">
-                {new Intl.NumberFormat("ru-RU").format(payload[0].value)} ₽
-              </span>
+              {'Объем закупок'}:{' '}
+              <span className="font-medium">{new Intl.NumberFormat('ru-RU').format(payload[0].value)} ₽</span>
             </span>
           </div>
         </div>
@@ -54,16 +30,14 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 export function PurchaseDynamicsChart() {
   const { purchaseDynamics } = useUserProfileStore();
-  const strokeColor = "#8b5cf6"; // Фиолетовый цвет для линии
-  const fillColor = "#ede9fe"; // Светло-фиолетовый для заливки
+  const strokeColor = '#8b5cf6'; // Фиолетовый цвет для линии
+  const fillColor = '#ede9fe'; // Светло-фиолетовый для заливки
 
   return (
-    <Card>
+    <Card className="mx-6">
       <CardHeader>
         <CardTitle>Динамика объема закупок</CardTitle>
-        <CardDescription>
-          Сумма ваших закупок за выбранный период
-        </CardDescription>
+        <CardDescription>Сумма ваших закупок за выбранный период</CardDescription>
       </CardHeader>
       <CardContent className="pb-4">
         <div className="h-[250px]">
@@ -84,10 +58,10 @@ export function PurchaseDynamicsChart() {
                 axisLine={false}
                 tickMargin={8}
                 tickFormatter={(value) => {
-                  const date = new Date(value + "-01"); // Добавляем день для корректного парсинга
-                  return date.toLocaleDateString("ru-RU", {
-                    month: "short",
-                    year: "2-digit",
+                  const date = new Date(value + '-01'); // Добавляем день для корректного парсинга
+                  return date.toLocaleDateString('ru-RU', {
+                    month: 'short',
+                    year: '2-digit',
                   });
                 }}
               />

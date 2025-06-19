@@ -7,7 +7,7 @@ type ProductSidebarProps = React.ComponentProps<typeof ProductFiltersUI>;
 
 export function ProductSidebar(props: ProductSidebarProps) {
   return (
-    <aside className="w-[var(--filters-width)] border-border border-r px-6 py-4">
+    <aside className="min-h-full w-[var(--filters-width)] border-border border-r px-6 py-4">
       <h2 className="mb-4 font-bold text-xl">Фильтры</h2>
       <ProductFiltersUI {...props} />
     </aside>

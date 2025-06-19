@@ -3,7 +3,7 @@
 import { Order, OrderStatus } from '@/features/orders/model/types';
 import { cn } from '@/shared/lib/css';
 import { Badge } from '@/shared/ui/kit/badge';
-import { PackageCheck, PackageX, ShoppingCart, Truck } from 'lucide-react';
+import { CircleCheck, CircleX, Copy, Package, Truck } from 'lucide-react';
 
 interface OrderListItemProps {
   order: Order;
@@ -14,23 +14,23 @@ interface OrderListItemProps {
 const statusConfig: Record<OrderStatus, { label: string; icon: React.ElementType; className: string }> = {
   delivered: {
     label: 'Доставлен',
-    icon: PackageCheck,
-    className: 'bg-green-100 text-black border-green-300',
+    icon: CircleCheck,
+    className: 'bg-blue-100 text-black border-blue-300',
   },
   'in-transit': {
     label: 'В пути',
     icon: Truck,
-    className: 'bg-blue-100 text-black border-blue-300',
+    className: 'bg-yellow-100 text-black  border-yellow-300',
   },
   processing: {
     label: 'Собирается',
-    icon: ShoppingCart,
-    className: 'bg-yellow-100 text-black  border-yellow-300',
+    icon: Package,
+    className: 'bg-green-100 text-black border-green-300 ',
   },
   cancelled: {
     label: 'Отменен',
-    icon: PackageX,
-    className: 'bg-red-100 text-black  border-red-300',
+    icon: CircleX,
+    className: 'bg-red-100 text-black border-red-300',
   },
 };
 
@@ -52,24 +52,32 @@ export function OrderListItem({ order, isSelected, onSelect }: OrderListItemProp
       <div className="flex items-start justify-between">
         <p className={cn('font-medium text-sm', isSelected ? 'text-gray-800' : 'text-gray-500')}>
           От {order.date} <span className="mx-0.5 text-gray-400">•</span> №{order.id}
+          <span className="mx-0.5 text-gray-400">
+            <Copy className="mb-1 ml-2 inline size-4" />
+          </span>
         </p>
+      </div>
+      <div className="flex items-end justify-between">
+        <div className="flex items-end justify-between">
+          <div className="space-y-0.5 text-sm">
+            <div className="text-neutral-400">
+              Вес: <span className="font-medium text-neutral-900">{order.totalWeight} кг</span>
+            </div>
+            <div className="text-neutral-400">
+              Цена: <span className="font-medium text-neutral-900">{formattedPrice} ₽</span>
+            </div>
+          </div>
+        </div>
         <Badge
           variant="outline"
-          className={cn('h-[30px] px-2 py-0.5 font-semibold text-sm', config.className)}
+          className={cn(
+            'flex h-[30px] w-[120px] justify-start gap-2 px-2 py-0.5 font-semibold text-sm',
+            config.className,
+          )}
         >
           <config.icon className="size-5!" />
           {config.label}
         </Badge>
-      </div>
-      <div className="flex items-end justify-between">
-        <div className="space-y-0.5 text-sm">
-          <div className="text-neutral-400">
-            Вес: <span className="font-medium text-neutral-900">{order.totalWeight} кг</span>
-          </div>
-          <div className="text-neutral-400">
-            Цена: <span className="font-medium text-neutral-900">{formattedPrice} ₽</span>
-          </div>
-        </div>
       </div>
     </div>
   );

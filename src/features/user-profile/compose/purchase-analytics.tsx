@@ -1,17 +1,17 @@
 // file: src/widgets/analytics/PurchaseAnalytics.tsx
 
-import { PurchaseBrandChart } from "@/features/user-profile/compose/purchase-brand-chart";
-import { PurchaseCategoryChart } from "@/features/user-profile/compose/purchase-category-chart";
-import { PurchaseDynamicsChart } from "@/features/user-profile/compose/purchase-dynamics-chart";
+import { PurchaseBrandChart } from '@/features/user-profile/compose/purchase-brand-chart';
+import { PurchaseCategoryChart } from '@/features/user-profile/compose/purchase-category-chart';
+import { PurchaseDynamicsChart } from '@/features/user-profile/compose/purchase-dynamics-chart';
+import { Separator } from '@/shared/ui/kit/separator';
 
 export function PurchaseAnalytics() {
   return (
-    <div className="p-6 space-y-6">
-      <h2 className="text-xl font-semibold text-neutral-900">
-        Аналитика закупок
-      </h2>
+    <div className="space-y-6 border-l">
+      <h2 className="m-0 p-6.75 font-semibold text-neutral-900 text-xl">Аналитика закупок</h2>
+      <Separator />
       <PurchaseDynamicsChart />
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+      <div className="mx-6 grid grid-cols-1 gap-6 md:grid-cols-2">
         <PurchaseCategoryChart />
         <PurchaseBrandChart />
       </div>

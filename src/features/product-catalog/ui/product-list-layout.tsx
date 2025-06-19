@@ -99,9 +99,9 @@ export function ProductListLayout({
   children: React.ReactNode; // ProductListLayoutContent
 }) {
   return (
-    <div className="flex flex-row xl:w-full">
+    <div className="flex min-h-full flex-row xl:w-full">
       {sidebar}
-      <div className="flex-1 p-6">
+      <div className="flex-1 border-r p-6">
         {header}
         {children}
       </div>
